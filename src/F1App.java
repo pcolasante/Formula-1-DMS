@@ -8,21 +8,140 @@
  The user will be asked to input driver or race details to either add/remove.
  The program will return the driver list, and a confirmation.
 
- Class: LMSApp (Main class): Will launch the main console-based application.
+ Class: F1App (Main class): Will launch the main console-based application.
 
  */
 
 import java.util.Scanner;
+
 public class F1App {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Scanner scanner = new Scanner(System.in);
+        InformationManager manager = new InformationManager();
+
+        int selectChoice;
+
+        do {
+            //Sets the main menu
+            System.out.println("\n--- FORMULA 1 - DATA MANAGEMENT SYSTEM ---\n");
+            System.out.println("1. Drivers");
+            System.out.println("2. Races");
+            System.out.println("3. Championship Standings");
+            System.out.println("4. Exit");
+            System.out.print("Select an option: ");
+
+            selectChoice = scanner.nextInt();
+            scanner.nextLine(); // clear buffer
+            switch (selectChoice) {
+                case 1:
+                    int choice1;
+                    do {
+                        System.out.println("\n--- Drivers ---\n");
+                        System.out.println("1. View Drivers");
+                        System.out.println("2. Add Driver");
+                        System.out.println("3. Update Driver");
+                        System.out.println("4. Delete Driver");
+                        System.out.println("5. Load Driver from file");
+                        System.out.println("6. Return to Main Menu");
+                        System.out.print("Select an option: ");
+
+                        choice1 = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice1) {
+                            case 1:
+                                //Displays Drivers
+                                System.out.println("\n--- Drivers ---\n");
+                                manager.getAllDrivers();
+                                break;
+                            case 2:
+                                //Adds a Driver
+                                System.out.println("\n--- Add a Driver ---\n");
+                                manager.addDriver();
+                                break;
+                            case 3:
+                                //Update a Driver
+                                System.out.println("\n--- Update a Driver ---\n");
+                                manager.updateDriver();
+                                break;
+                            case 4:
+                                //Delete a Driver
+                                System.out.println("\n--- Delete a Driver ---\n");
+                                manager.removeDriver();
+                                break;
+                            case 5:
+                                System.out.println("\n--- Load Driver from file ---\n");
+                                manager.loadDriver();
+                                break;
+                            case 6:
+                                System.out.println("\n--- Return to Main Menu ---\n");
+                                break;
+                            default:
+                                System.out.println("\n--- Invalid option ---\n");
+                        }
+                    } while (choice1 != 6);
+                    break;
+//---------------------------------------------------------------------------------------------------//
+                case 2:
+                    int choice2;
+                    do {
+                        System.out.println("\n--- Races ---\n");
+                        System.out.println("1. View Races");
+                        System.out.println("2. Add Race");
+                        System.out.println("3. Update Race");
+                        System.out.println("4. Delete Race");
+                        System.out.println("5. Load Race from file");
+                        System.out.println("6. Return to Main Menu");
+                        System.out.print("Select an option: ");
+
+                        choice2 = scanner.nextInt();
+                        scanner.nextLine();
+                        switch (choice2) {
+                            case 1:
+                                System.out.println("\n--- Races ---\n");
+                                manager.getAllRaces();
+                                break;
+                            case 2:
+                                System.out.println("\n--- Add a Race ---\n");
+                                manager.addRace();
+                                break;
+                            case 3:
+                                System.out.println("\n--- Update a Race ---\n");
+                                manager.updateRace();
+                                break;
+                            case 4:
+                                System.out.println("\n--- Delete a Race ---\n");
+                                manager.deleteRace();
+                                break;
+                            case 5:
+                                System.out.println("\n--- Load Race from file ---\n");
+                                manager.loadRace();
+                                break;
+                            case 6:
+                                System.out.println("\n--- Return to Main Menu ---\n");
+                                break;
+                            default:
+                                System.out.println("\n--- Invalid option ---\n");
+                        }
+                    } while (choice2 != 6);
+                    break;
+
+//--------------------------------------------------------------------------------------------------//
+                case 3:
+                    System.out.println("\n--- Championship Standings ---\n");
+                    //what the fuck am i doing here
+                    break;
+                case 4:
+                    System.out.println("EXITING FORMULA 1 DATA MANAGEMENT SYSTEM");
+                    break;
+                default:
+                    System.out.println("INVALID SELECTION");
+            }
+
         }
+        while (selectChoice != 4);
+
+        scanner.close();
+
     }
 }
