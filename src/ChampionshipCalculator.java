@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
+//what the hell am i doing again
+
 
 public class ChampionshipCalculator {
 
@@ -10,10 +12,10 @@ public class ChampionshipCalculator {
 
         Map<String, Integer> standings = new HashMap<>();
 
-        for (RaceResult r : results) {
+        for (Race r : result) {
             standings.put(
-                    r.getDriverName(),
-                    standings.getOrDefault(r.getDriverName(), 0) + r.getPoints()
+                    String.valueOf(r.getDriver()),
+                    standings.getOrDefault(r.getDriver(), 0) + r.getResult()
             );
         }
 

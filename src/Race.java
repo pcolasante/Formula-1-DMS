@@ -10,17 +10,57 @@ import java.util.Map;
  */
 public class Race {
 
-    String raceId;
+    private int raceId;
+    private Driver driver;
     String raceName;
     String location;
     String country;
     String date;
-    int attendance;
+    int position;
     int totalLaps;
-    Map<String, Integer> results;
+    int result;
 
-    public Race(/*what goes here again?*/) {
+    //Map<String, Integer> results;
 
+    public Race(int raceId,Driver driver, String raceName, String location, String country, String date, int totalLaps, int position, int result) {
+        this.raceId = raceId;
+        this.raceName = raceName;
+        this.location = location;
+        this.country = country;
+        this.date = date;
+        this.totalLaps = totalLaps;
+        this.position = position;
+        this.result = result;
+    }
+    public int getRaceId() {
+        return raceId;
+    }
+    public Driver getDriver() {
+        return driver;
+    }
+    public String getRaceName() {
+        return raceName;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public String getCountry() {
+        return country;
+    }
+    public String getDate() {
+        return date;
+    }
+    public int getPosition() {
+        return position;
+    }
+    public int getTotalLaps() {
+        return totalLaps;
+    }
+    public int getResult() {
+        return result;
     }
 
+    public String toFileString() {
+        return raceId + "-" + raceName + "," + location + "," + country + "-" + date + "- Laps:" + totalLaps + "-- Driver:" + driver + "- Position:" + position + "- Result:" + result;
+    }
 }
