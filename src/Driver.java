@@ -26,7 +26,7 @@ public class Driver {
         this.team = team;
         this.carNumber = carNumber;
         this.totalPoints = totalPoints;
-        this.raceWins = RaceWins;
+        this.raceWins = raceWins;
         this.raceEntered = raceEntered;
         this.podiums = podiums;
         this.activeStatus = activeStatus;
@@ -63,8 +63,8 @@ public class Driver {
     }
 
     public String toFileString() {
-      return driverId ; //missing literally everything else @TOD0: COMPLETE FINAL STRING
+        // add String formatting ""
+      return driverId + driverName + nationality + carNumber + team + raceEntered + podiums + raceWins + totalPoints + activeStatus;
     }
-
 
 }
