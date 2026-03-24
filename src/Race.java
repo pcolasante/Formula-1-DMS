@@ -24,6 +24,7 @@ public class Race {
 
     public Race(int raceId,Driver driver, String raceName, String location, String country, String date, int totalLaps, int position, int result) {
         this.raceId = raceId;
+        this.driver = driver;
         this.raceName = raceName;
         this.location = location;
         this.country = country;

@@ -19,7 +19,7 @@ public class Driver {
     int podiums;
     boolean activeStatus;
 
-    public Driver(int driverId, String driverName, String nationality, String team, int carNumber, int totalPoints, int RaceWins, int RaceEntered, int podiums, boolean activeStatus) {
+    public Driver(int driverId, String driverName, String nationality, String team, int carNumber, int totalPoints, int raceWins, int raceEntered, int podiums, boolean activeStatus) {
         this.driverId = driverId;
         this.driverName = driverName;
         this.nationality = nationality;
@@ -64,7 +64,7 @@ public class Driver {
 
     public String toFileString() {
         // add String formatting ""
-      return driverId + driverName + nationality + carNumber + team + raceEntered + podiums + raceWins + totalPoints + activeStatus;
+      return driverId + " - " + driverName + "-" + carNumber + " - " + nationality + " -" + team + " - Races Entered: " + raceEntered + " - Podiums: " + podiums + " - Race Wins: " + raceWins + " - Total Points: " + totalPoints + " - Active Status: " + activeStatus;
     }
 
 }
