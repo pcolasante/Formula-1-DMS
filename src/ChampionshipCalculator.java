@@ -1,9 +1,9 @@
+
+
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
 
-
-//what the hell am i doing again
 
 
 public class ChampionshipCalculator {

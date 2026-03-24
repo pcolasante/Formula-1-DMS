@@ -17,17 +17,13 @@ public class F1App {
 
         DataValidation validator = new DataValidation();
 
-        FileManager fileManager =
-                new FileManager();
+        FileManager fileManager = new FileManager();
 
-        InformationManager manager =
-                fileManager.loadFromFile();
+        InformationManager manager = new InformationManager();
 
-        ChampionshipCalculator calculator =
-                new ChampionshipCalculator();
+        ChampionshipCalculator calculator = new ChampionshipCalculator();
 
-        MenuSystem menu =
-                new MenuSystem(manager, fileManager, validator, calculator);
+        MenuSystem menu = new MenuSystem(manager, fileManager, validator, calculator);
 
         boolean saved = menu.start();
 

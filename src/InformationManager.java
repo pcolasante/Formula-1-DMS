@@ -20,14 +20,7 @@ public class InformationManager {
 
 
     public ArrayList<Driver> getAllDrivers() {
-        if (drivers.isEmpty()) {
-            System.out.println("No Drivers in the System");
-        }
-        System.out.println("Drivers in the System");
-        for (Driver driver : drivers) {
-            System.out.println(driver);
-        }
-        return drivers;
+        return new ArrayList<>(drivers);
     }
 
     public boolean addDriver(Driver driver) {
@@ -71,14 +64,7 @@ public class InformationManager {
     }
 
     public ArrayList<Race> getAllRaces() {
-        if (races.isEmpty()) {
-            System.out.println("No Races in the System");
-        }
-        System.out.println("Races in the System");
-        for (Race race : races) {
-            System.out.println(race);
-        }
-        return races;
+        return new ArrayList<>(races);
     }
 
     public  boolean addRace(Race race) {
@@ -100,7 +86,7 @@ public class InformationManager {
     public  boolean deleteRace(int raceId) {
         for(Race race : races){
             if(race.getRaceId() == raceId){
-                drivers.remove(race);
+                races.remove(race);
                 return true;
             }
         }

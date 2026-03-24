@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuSystem {
@@ -50,7 +50,15 @@ public class MenuSystem {
                             case 1:
                                 //Displays Drivers
                                 System.out.println("\n--- Drivers ---\n");
-                                manager.getAllDrivers();
+                                ArrayList<Driver> allDrivers = manager.getAllDrivers();
+                                if (allDrivers.isEmpty()) {
+                                    System.out.println("No Drivers in the System");
+                                } else {
+                                    System.out.println("Drivers in the System");
+                                    for (Driver driver : allDrivers) {
+                                        System.out.println(driver);
+                                    }
+                                }
                                 break;
                             case 2:
                                 //Adds a Driver
@@ -130,6 +138,17 @@ public class MenuSystem {
                     //i really have no idea what am i doing again
                     break;
                 case 4:
+                    System.out.println("\nEnter file path to save (or press Enter to skip):\n");
+                    String savePath = scanner.nextLine().trim();
+
+                    if(!savePath.isEmpty()) {
+                        boolean saveResult = fileManager.saveToFile(savePath,manager);
+                        if(saveResult.isPresent()) {
+                            System.out.println("Save successful");
+                        } else {
+                            System.out.println("Save failed");
+                        }
+                    }
                     System.out.println("EXITING FORMULA 1 DATA MANAGEMENT SYSTEM");
                     break;
                 default:
