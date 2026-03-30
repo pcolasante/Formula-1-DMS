@@ -1,10 +1,10 @@
-import java.util.Map;
+package Core;
 
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
  Date: 3/8/2026
 
- Class: Race: All information from the race is held here.
+ Class: Core.Race: All information from the race is held here.
  It will obtain and return the race name, location, country, date, attendance, total laps, and result.
 
  */
@@ -63,6 +63,6 @@ public class Race {
     }
 
     public String toFileString() {
-        return raceId + "-" + raceName + "," + location + "," + country + "-" + date + "- Laps:" + totalLaps + "-- Driver:" + driver + "- Position:" + position + "- Result:" + result;
+        return raceId + "-" + raceName + "," + location + "," + country + "-" + date + "- Laps:" + totalLaps + "-- Core.Driver:" + driver + "- Position:" + position + "- Result:" + result;
     }
 }

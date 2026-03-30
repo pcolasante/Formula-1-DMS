@@ -1,3 +1,5 @@
+package Core;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -5,13 +7,12 @@ import java.util.Scanner;
  Course: Software Development 1
  Date: 3/8/2026
 
- Class FileManager: This class will process the storage of the Driver and Race Results information.
+ Class Core.FileManager: This class will process the storage of the Core.Driver and Core.Race Results information.
 
  */
 public class FileManager {
 
-    //see if we can avoid the void method
-    public void loadFromFile(String fileName, InformationManager manager) {
+    public boolean loadFromFile(String fileName, InformationManager manager) {
         try {
             File file = new File(fileName);
 
@@ -19,7 +20,7 @@ public class FileManager {
 
             if (!file.exists()) {
                 System.out.println("File doesn't exist");
-                return;
+                return false;
             }
 
             Scanner scanner = new Scanner(file);
@@ -35,21 +36,18 @@ public class FileManager {
                     String[] parts = line.split("-");
                     if (parts.length != 2) {
                         throw new IllegalArgumentException("Incorrect format.");
-                        //WORK HERE 3/9
                     }
 
-                }
-
-                catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException e) {
                     System.out.println("Incorrect format.");
 
                 }
 
             }
-        }
-        catch (Exception e) {
+            return true;
+        } catch (Exception e) {
             System.out.println("Error loading file");
+            return false;
         }
     }
-
 }

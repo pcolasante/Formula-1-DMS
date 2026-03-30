@@ -1,3 +1,10 @@
+import Core.ChampionshipCalculator;
+import Core.DataValidation;
+import Core.FileManager;
+import Core.InformationManager;
+
+import java.awt.*;
+
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
  Date: 3/8/2026
@@ -13,23 +20,26 @@
  */
 public class F1App {
 
+    private final DataValidation validator;
+    private final FileManager fileManager;
+    private final InformationManager informationManager;
+    private final ChampionshipCalculator championshipCalculator;
+
+    public F1App() {
+        validator = new DataValidation();
+        fileManager = new FileManager();
+        informationManager = new InformationManager();
+        championshipCalculator = new ChampionshipCalculator();
+    }
+
+    public boolean run() {
+        MenuSystem menu = new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
+        return menu.start();
+    }
+
     public static void main(String[] args) {
+        new F1App().run();
 
-        DataValidation validator = new DataValidation();
-
-        FileManager fileManager = new FileManager();
-
-        InformationManager manager = new InformationManager();
-
-        ChampionshipCalculator calculator = new ChampionshipCalculator();
-
-        MenuSystem menu = new MenuSystem(manager, fileManager, validator, calculator);
-
-        boolean saved = menu.start();
-
-        if (!saved) {
-            System.out.println("Error saving data.");
-        }
     }
 
 }

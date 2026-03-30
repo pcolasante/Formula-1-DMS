@@ -1,20 +1,26 @@
+import Core.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuSystem {
 
-    private InformationManager manager;
-    private FileManager fileManager;
-    private DataValidation validator;
-    private ChampionshipCalculator calculator;
+    private final InformationManager informationManager;
+    private final FileManager fileManager;
+    private final DataValidation validator;
+    private final ChampionshipCalculator calculator;
 
-    public MenuSystem(InformationManager manager, FileManager fileManager,
+    public MenuSystem(InformationManager informationManager, FileManager fileManager,
                       DataValidation validator, ChampionshipCalculator calculator) {
 
-        this.manager = manager;
+        this.informationManager = informationManager;
         this.fileManager = fileManager;
         this.validator = validator;
         this.calculator = calculator;
+
+    }
+
+    public boolean start() {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -35,6 +41,7 @@ public class MenuSystem {
                 case 1:
                     int choice1;
                     do {
+                        //Menu Options
                         System.out.println("\n--- Drivers ---\n");
                         System.out.println("1. View Drivers");
                         System.out.println("2. Add Driver");
@@ -61,8 +68,8 @@ public class MenuSystem {
                                 }
                                 break;
                             case 2:
-                                //Adds a Driver
-                                System.out.println("\n--- Add a Driver ---\n");
+                                //Adds a Core.Driver
+                                System.out.println("\n--- Add a Core.Driver ---\n");
                                 manager.addDriver();
                                 break;
                             case 3:
@@ -76,13 +83,16 @@ public class MenuSystem {
                                 manager.removeDriver();
                                 break;
                             case 5:
+                                //Load Driver from File
                                 System.out.println("\n--- Load Driver from file ---\n");
                                 manager.loadDriver();
                                 break;
                             case 6:
+                                //Returning to Main Menu
                                 System.out.println("\n--- Return to Main Menu ---\n");
                                 break;
                             default:
+                                //Input validation
                                 System.out.println("\n--- Invalid option ---\n");
                         }
                     } while (choice1 != 6);
@@ -91,6 +101,7 @@ public class MenuSystem {
                 case 2:
                     int choice2;
                     do {
+                        //Menu Options for Races
                         System.out.println("\n--- Races ---\n");
                         System.out.println("1. View Races");
                         System.out.println("2. Add Race");
@@ -134,16 +145,16 @@ public class MenuSystem {
 
 //--------------------------------------------------------------------------------------------------//
                 case 3:
+                    //Menu Options for Championship Standings
                     System.out.println("\n--- Championship Standings ---\n");
-                    //i really have no idea what am i doing again
                     break;
                 case 4:
                     System.out.println("\nEnter file path to save (or press Enter to skip):\n");
                     String savePath = scanner.nextLine().trim();
 
-                    if(!savePath.isEmpty()) {
-                        boolean saveResult = fileManager.saveToFile(savePath,manager);
-                        if(saveResult.isPresent()) {
+                    if (!savePath.isEmpty()) {
+                        boolean saveResult = fileManager.saveToFile(savePath, manager);
+                        if (saveResult.isPresent()) {
                             System.out.println("Save successful");
                         } else {
                             System.out.println("Save failed");
@@ -158,7 +169,67 @@ public class MenuSystem {
         }
         while (selectChoice != 4);
 
-        scanner.close();
+        return true;
 
     }
+    private int driversMenu(Scanner scanner) {
+        int choice;
+        do {
+            //Menu Options
+            System.out.println("\n--- Drivers ---\n");
+            System.out.println("1. View Drivers");
+            System.out.println("2. Add Driver");
+            System.out.println("3. Update Driver");
+            System.out.println("4. Delete Driver");
+            System.out.println("5. Load Driver from file");
+            System.out.println("6. Return to Main Menu");
+
+            choice = readChoice(scanner, "Select an Option: ");
+
+            switch (choice) {
+                case 1:
+                    //Displays Drivers
+                    System.out.println("\n--- Drivers ---\n");
+                    ArrayList<Driver> allDrivers = informationManager.getAllDrivers();
+                    if (allDrivers.isEmpty()) {
+                        System.out.println("No Drivers in the System");
+                    } else {
+                        System.out.println("Drivers in the System");
+                        for (Driver driver : allDrivers) {
+                            System.out.println(driver);
+                        }
+                    }
+                    break;
+                case 2:
+                    //Adds a Driver
+                    System.out.println("\n--- Add a Driver ---\n");
+                    informationManager.addDriver();
+                    break;
+                case 3:
+                    //Update a Driver
+                    System.out.println("\n--- Update a Driver ---\n");
+                    informationManager.updateDriver();
+                    break;
+                case 4:
+                    //Delete a Driver
+                    System.out.println("\n--- Delete a Driver ---\n");
+                    informationManager.removeDriver();
+                    break;
+                case 5:
+                    //Load Driver from File
+                    System.out.println("\n--- Load Driver from file ---\n");
+                    informationManager.loadDriver();
+                    break;
+                case 6:
+                    //Returning to Main Menu
+                    System.out.println("\n--- Return to Main Menu ---\n");
+                    break;
+                default:
+                    //Input validation
+                    System.out.println("\n--- Invalid option ---\n");
+            }
+        }
+    }
+
 }
+
