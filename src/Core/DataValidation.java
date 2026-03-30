@@ -1,8 +1,10 @@
+package Core;
+
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
  Date: 3/8/2026
 
- Class FileManager: This class will validate the data input in the program, ensuring the program does not crash due to invalid data.
+ Class Core.FileManager: This class will validate the data input in the program, ensuring the program does not crash due to invalid data.
 
  */
 public class DataValidation {

@@ -1,8 +1,10 @@
+package Core;
+
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
  Date: 3/8/2026
 
- Class: Driver: All information from the driver is held here.
+ Class: Core.Driver: All information from the driver is held here.
  It will obtain and return the driver's name, nationality, team, car number, total points won so far, race wins, races entered, podiums, and if active or not.
 
  */
@@ -64,7 +66,7 @@ public class Driver {
 
     public String toFileString() {
         // add String formatting ""
-      return driverId + " - " + driverName + "-" + carNumber + " - " + nationality + " -" + team + " - Races Entered: " + raceEntered + " - Podiums: " + podiums + " - Race Wins: " + raceWins + " - Total Points: " + totalPoints + " - Active Status: " + activeStatus;
+      return driverId + " - " + driverName + "-" + carNumber + " - " + nationality + " -" + team + " - Races Entered: " + raceEntered + " - Podiums: " + podiums + " - Core.Race Wins: " + raceWins + " - Total Points: " + totalPoints + " - Active Status: " + activeStatus;
     }
 
 }
