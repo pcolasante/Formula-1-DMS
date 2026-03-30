@@ -6,7 +6,7 @@ import java.util.ArrayList;
  Course: Software Development 1
  Date: 3/8/2026
 
- Class Core.InformationManager: This class will process any additions or removals to the Core.Driver and Core.Race lists.
+ Class InformationManager: This class will process any additions or removals to the Driver and Race lists.
 
  */
 public class InformationManager {
@@ -20,11 +20,14 @@ public class InformationManager {
         races = new ArrayList<>();
     }
 
-
+/* ------------------------------------------------------------- DRIVERS ----------------------------------------------------------------- */
+    
+    //Gets all drivers from database, if any
     public ArrayList<Driver> getAllDrivers() {
         return new ArrayList<>(drivers);
     }
 
+    //Adds Driver to database
     public boolean addDriver(Driver driver) {
         if(driverExists(driver.getDriverId())) {
             return false;
@@ -33,7 +36,8 @@ public class InformationManager {
         return true;
     }
 
-    public  updateDriver(int index, Driver updatedDriver) {
+    //Updates driver in database
+    public boolean  updateDriver(int index, Driver updatedDriver) {
         if (index >= 0 && index < drivers.size()) {
             drivers.set(index, updatedDriver);
             return true;
@@ -41,6 +45,7 @@ public class InformationManager {
         return false;
     }
 
+    //Removes driver from database
     public boolean removeDriver(int driverId) {
         for(Driver driver : drivers){
             if(driver.getDriverId() == driverId){
@@ -51,11 +56,7 @@ public class InformationManager {
         return false;
     }
 
-    public ArrayList<Driver> loadDrivers(ArrayList<Driver> loadedDrivers) {
-        drivers = loadedDrivers;
-        return drivers;
-    }
-
+    //Checks if driver exists in database
     public boolean driverExists(int driverId){
         for(Driver driver : drivers){
             if(driver.getDriverId() == driverId){
@@ -65,10 +66,22 @@ public class InformationManager {
         return false;
     }
 
+    //Loads Drivers from text file
+    public ArrayList<Driver> loadDrivers(ArrayList<Driver> loadedDrivers) {
+        drivers = loadedDrivers;
+        return drivers;
+    }
+
+
+
+/* ------------------------------------------------------------------ RACES ----------------------------------------------------------------------- */
+
+    //Gets all races from database, if any
     public ArrayList<Race> getAllRaces() {
         return new ArrayList<>(races);
     }
 
+    //Adds race to database
     public  boolean addRace(Race race) {
         if(raceExists(race.getRaceId())) {
             return false;
@@ -77,7 +90,8 @@ public class InformationManager {
         return true;
     }
 
-    public  updateRace(int index, Race updatedRace) {
+    //Updates race in database
+    public  boolean updateRace(int index, Race updatedRace) {
         if (index >= 0 && index < races.size()) {
             races.set(index, updatedRace);
             return true;
@@ -85,6 +99,7 @@ public class InformationManager {
         return false;
     }
 
+    //deletes race from database
     public  boolean deleteRace(int raceId) {
         for(Race race : races){
             if(race.getRaceId() == raceId){
@@ -95,6 +110,7 @@ public class InformationManager {
         return false;
     }
 
+    //Checks if race exists in database
     public boolean raceExists(int raceId) {
         for(Race race : races){
             if(race.getRaceId() == raceId){
@@ -104,6 +120,7 @@ public class InformationManager {
         return false;
     }
 
+    //Loads the Races from text file
     public ArrayList<Race> loadRaces(ArrayList<Race> loadedRaces) {
         races = loadedRaces;
         return races;

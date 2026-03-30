@@ -7,7 +7,7 @@ import java.util.Scanner;
  Course: Software Development 1
  Date: 3/8/2026
 
- Class Core.FileManager: This class will process the storage of the Core.Driver and Core.Race Results information.
+ Class FileManager: This class will process the storage of the Driver and Race Results information.
 
  */
 public class FileManager {
@@ -29,9 +29,11 @@ public class FileManager {
                 lineNumber++;
                 String line = scanner.nextLine();
                 line = line.trim();
+
                 if (line.isEmpty()) {
                     continue;
                 }
+
                 try {
                     String[] parts = line.split("-");
                     if (parts.length != 2) {
@@ -48,6 +50,7 @@ public class FileManager {
         } catch (Exception e) {
             System.out.println("Error loading file");
             return false;
+            scanner.close();
         }
     }
 }
