@@ -50,7 +50,6 @@ public class FileManager {
         } catch (Exception e) {
             System.out.println("Error loading file");
             return false;
-            scanner.close();
         }
     }
 }
