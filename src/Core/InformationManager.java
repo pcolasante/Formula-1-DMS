@@ -24,7 +24,23 @@ public class InformationManager {
     
     //Gets all drivers from database, if any
     public ArrayList<Driver> getAllDrivers() {
-        return new ArrayList<>(drivers);
+        if (drivers.isEmpty()) {
+            System.out.println("\n--- No Drivers on Record ---\n");
+        }
+        for (Driver driver : drivers) {
+            System.out.println(driver);
+        }
+        return drivers;
+    }
+
+    //Get Driver by ID
+    public Driver getDriverById(int driverId) {
+        for (Driver driver : drivers) {
+            if (driver.getDriverId() == driverId) {
+                return driver;
+            }
+        }
+        return null;
     }
 
     //Adds Driver to database
@@ -47,9 +63,9 @@ public class InformationManager {
 
     //Removes driver from database
     public boolean removeDriver(int driverId) {
-        for(Driver driver : drivers){
-            if(driver.getDriverId() == driverId){
-                drivers.remove(driver);
+        for (int i = 0; i < drivers.size(); i++) {
+            if (drivers.get(i).getDriverId() == driverId) {
+                drivers.remove(i);
                 return true;
             }
         }

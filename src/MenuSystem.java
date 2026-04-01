@@ -32,7 +32,8 @@ public class MenuSystem {
             System.out.println("1. Drivers");
             System.out.println("2. Races");
             System.out.println("3. Championship Standings");
-            System.out.println("4. Exit");
+            System.out.println("4. Save Data to File");
+            System.out.println("5. Exit");
             System.out.print("Select an option: ");
 
             selectChoice = scanner.nextInt();
@@ -150,9 +151,14 @@ public class MenuSystem {
                     System.out.println("\n--- Championship Standings ---\n");
                     break;
 
+//--------------------------------------------------------------------------------------------------//
+                case 4: //Save Data to File
+                    System.out.println("\n--- Save Data to File ---\n");
+
+
                     //-------------------------------------------------------------------------------//
 
-                case 4: //Exit
+                case 5: //Exit
                     System.out.println("\nEnter file path to save (or press Enter to skip):\n");
                     String savePath = scanner.nextLine().trim();
 

@@ -22,7 +22,7 @@ public class Race {
 
     //Map<String, Integer> results;
 
-    public Race(int raceId,Driver driver, String raceName, String location, String country, String date, int totalLaps, int position, int result) {
+    public Race(int raceId, Driver driver, String raceName, String location, String country, String date, int totalLaps, int position, int result) {
         this.raceId = raceId;
         this.driver = driver;
         this.raceName = raceName;
@@ -33,31 +33,40 @@ public class Race {
         this.position = position;
         this.result = result;
     }
+
     public int getRaceId() {
 
         return raceId;
     }
+
     public Driver getDriver() {
         return driver;
     }
+
     public String getRaceName() {
         return raceName;
     }
+
     public String getLocation() {
         return location;
     }
+
     public String getCountry() {
         return country;
     }
+
     public String getDate() {
         return date;
     }
+
     public int getPosition() {
         return position;
     }
+
     public int getTotalLaps() {
         return totalLaps;
     }
+
     public int getResult() {
         return result;
     }
