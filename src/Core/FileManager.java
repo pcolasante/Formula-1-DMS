@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class FileManager {
 
-    public boolean loadFromFile(String fileName, InformationManager manager) {
+    public boolean loadFromFile(String fileName, InformationManager informationManager) {
         try {
             File file = new File(fileName);
 
