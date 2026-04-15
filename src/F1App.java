@@ -20,11 +20,13 @@ import java.awt.*;
  */
 public class F1App {
 
+    // Declare all components as final to ensure immutability and thread safety
     private final DataValidation validator;
     private final FileManager fileManager;
     private final InformationManager informationManager;
     private final ChampionshipCalculator championshipCalculator;
 
+    // Default constructor initializes all components with their default implementations
     public F1App() {
         validator = new DataValidation();
         fileManager = new FileManager();
@@ -32,11 +34,26 @@ public class F1App {
         championshipCalculator = new ChampionshipCalculator();
     }
 
+    // Constructor for dependency injection, allows easier testing and flexibility
+        public F1App(DataValidation validator,
+                 FileManager fileManager,
+                 InformationManager manager,
+                 ChampionshipCalculator calculator) {
+        this.validator = Objects.requireNonNull(validator, "Validator is required");
+        this.fileManager = Objects.requireNonNull(fileManager, "FileManager is required");
+        this.manager = Objects.requireNonNull(manager, "Manager is required");
+        this.calculator = Objects.requireNonNull(calculator, "Calculator is required");
+    }
+
+    //Create and start the menu system, returning true if the user chooses to exit
     public boolean run() {
         MenuSystem menu = new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
         return menu.start();
     }
 
+    
+
+    // Main method to launch the application
     public static void main(String[] args) {
         new F1App().run();
 
