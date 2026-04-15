@@ -9,6 +9,8 @@ import java.util.ArrayList;
  Class InformationManager: This class will process any additions or removals to the Driver and Race lists.
 
  */
+
+
 public class InformationManager {
 
     private ArrayList<Driver> drivers;
@@ -31,6 +33,11 @@ public class InformationManager {
             System.out.println(driver);
         }
         return drivers;
+    }
+
+    //Get Driver Data
+    public ArrayList<Driver> getDriversData() {
+        return new ArrayList<>(drivers);
     }
 
     //Get Driver by ID
@@ -90,10 +97,22 @@ public class InformationManager {
 
 
 
+
 /* ------------------------------------------------------------------ RACES ----------------------------------------------------------------------- */
 
     //Gets all races from database, if any
     public ArrayList<Race> getAllRaces() {
+        if (races.isEmpty()) {
+            System.out.println("\n--- No Races on Record ---\n");
+        }
+        for (Race race : races) {
+            System.out.println(race);
+        }
+        return races;
+    }
+
+    //Get Race Data
+    public ArrayList<Race> getRacesData() {
         return new ArrayList<>(races);
     }
 
