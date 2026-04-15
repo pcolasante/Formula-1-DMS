@@ -3,6 +3,15 @@ import Core.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*Author: Paulina Flores Colasante
+ Course: Software Development 1
+ Date: 3/8/2026
+
+ Class MenuSystem: This class is the main menu system for the console-based application. It will display the main menu and submenus for Drivers, Races, and Championship Standings. 
+ It will also handle user input and call the appropriate methods from the InformationManager, FileManager, DataValidation, and ChampionshipCalculator classes.   
+
+ */
+
 public class MenuSystem {
 
     private final InformationManager informationManager;
@@ -10,6 +19,7 @@ public class MenuSystem {
     private final DataValidation validator;
     private final ChampionshipCalculator calculator;
 
+    // Constructor for MenuSystem, initializes all components with the provided instances, ensuring separation of concerns and modularity
     public MenuSystem(InformationManager informationManager, FileManager fileManager,
                       DataValidation validator, ChampionshipCalculator calculator) {
 
@@ -20,30 +30,178 @@ public class MenuSystem {
 
     }
 
+    // Method to start the menu system, returns true if the user chooses to exit
     public boolean start() {
 
         Scanner scanner = new Scanner(System.in);
-
         int selectChoice;
 
         do {
-            //Sets the main menu
+            // Sets the main menu
             System.out.println("\n--- FORMULA 1 - DATA MANAGEMENT SYSTEM ---\n");
             System.out.println("1. Drivers");
             System.out.println("2. Races");
             System.out.println("3. Championship Standings");
             System.out.println("4. Save Data to File");
             System.out.println("5. Exit");
-            System.out.print("Select an option: ");
-
-            selectChoice = scanner.nextInt();
-            scanner.nextLine(); // clear buffer
+            selectChoice = readMenuChoice(scanner, "Select an option: ");
 
             switch (selectChoice) {
-                case 1: // Drivers
-                    int choice1;
+
+                /*--------------- Menu Options for Drivers ------------------*/
+                case 1: 
+                    handleDriversMenu(scanner);
+                    break;
+
+                /*--------------- Menu Options for Races -------------------*/
+                case 2: 
+                    handleRacesMenu(scanner);
+                    break;
+
+                /*--------------- Menu Options for Championship Standings -------------------*/
+                case 3: 
+                    runProtectedAction("Standings Calculation", this::showStandings);
+                    break;
+                
+                /*--------------- Menu Options for Saving Data to File -------------------*/
+                case 4: 
+                    runProtectedAction("save data", () -> saveToFile(scanner) ? 1 : -1);
+                    break;
+
+                /*--------------- Menu Options for Exiting the Program -------------------*/
+                case 5: 
+
+                    System.out.println("EXITING FORMULA 1 DATA MANAGEMENT SYSTEM");
+                    break;
+
+                /*--------------- Invalid Selection -------------------*/
+                default:
+                    System.out.println("INVALID SELECTION");
+            }
+
+        }
+        while (selectChoice != 5);
+
+        return true;
+
+
+        }
+
+        //Provides a Drivers Menu, allowing the user to view, add, update, delete, and load drivers from a file. Returns the user's choice to the main menu.
+        private int handleDriversMenu(Scanner scanner) {
+            int choice;
+
+            do {
+                System.out.println("\n--- Drivers ---\n");
+                System.out.println("1. View Drivers");
+                System.out.println("2. Add Driver");
+                System.out.println("3. Update Driver");
+                System.out.println("4. Delete Driver");
+                System.out.println("5. Load Driver from file");
+                System.out.println("6. Return to Main Menu");
+                choice = readMenuChoice(scanner, "Select an option: ");
+
+                switch (choice) {
+                    case 1:
+                        //Displays Drivers
+                        runProtectedAction("View Drivers", () -> informationManager.getAllDrivers().size());
+                        break;
+                    case 2:
+                        //Adds a Driver
+                        runProtectedAction("Add Driver", () -> informationManager.addDriver() ? 1 : -1);
+                        break;
+                    case 3:
+                        //Update a Driver
+                        runProtectedAction("Update Driver", () -> informationManager.updateDriver() ? 1 : -1);
+                        break;
+                    case 4:
+                        //Delete a Driver
+                        runProtectedAction("Delete Driver", () -> informationManager.removeDriver() ? 1 : -1);
+                        break;
+                    case 5:
+                        //Load Driver from File
+                        runProtectedAction("Load Drivers", () -> informationManager.loadFromFile() ? 1 : -1);
+                        break;
+                    case 6:
+                        //Returning to Main Menu
+                        System.out.println("\n--- Return to Main Menu ---\n");
+                        break;
+                    default:
+                        //Input validation
+                        System.out.println("\n--- Invalid option ---\n");
+                }
+            } while (choice != 6);            
+            return choice; 
+        }
+
+        private int handleRacesMenu(Scanner scanner) {
+            int choice;
+
+            do{
+                System.out.println("\n--- Races ---\n");
+                System.out.println("1. View Races");
+                System.out.println("2. Add Race");
+                System.out.println("3. Update Race");
+                System.out.println("4. Delete Race");
+                System.out.println("5. Load Race from file");
+                System.out.println("6. Return to Main Menu");
+                System.out.print("Select an option: ");
+                choice = readMenuChoice(scanner, "Select an option: ");
+
+                switch (choice) {
+                    case 1:
+                        runProtectedAction("View Races", () -> informationManager.getAllRaces().size());
+                        break;
+                    case 2:
+                        runProtectedAction("Add Race", () -> informationManager.addRace() ? 1 : -1);
+                        break;
+                    case 3:
+                        runProtectedAction("Update Race", () -> informationManager.updateRace() ? 1 : -1);
+                        break;
+                    case 4:
+                        runProtectedAction("Delete Race", () -> informationManager.deleteRace() ? 1 : -1);
+                        break;
+                    case 5:
+                        runProtectedAction("Load Races", () -> informationManager.loadFromFile() ? 1 : -1);
+                        break;
+                    case 6:
+                        //Returning to Main Menu
+                        System.out.println("\n--- Return to Main Menu ---\n");
+                        break;
+                    default:
+                        //Input validation
+                        System.out.println("\n--- Invalid option ---\n");
+                }
+
+            } while (choice != 6);
+            return choice;
+
+        }
+
+        private int runProtectedAction(String actionName, Action action) {
+            try {
+                return action.execute();
+        } catch (Exception e) {
+            System.out.println("Could not complete " + actionName + ". Please try again.");
+            return -1;
+            }
+        }
+
+        private int showStandings() {
+            System.out.println("\n--- Championship Standings ---\n");
+            return calculator.calculateStandings(manager.getAllRaces()).size();
+        }
+
+        private boolean addDriver() {
+            return informationManager.addDriver();
+        }
+    }
+
+}
+
+/*int choice1;
                     do {
-                        /*--------------- Menu Options for Drivers ------------------*/
+                        
                         System.out.println("\n--- Drivers ---\n");
                         System.out.println("1. View Drivers");
                         System.out.println("2. Add Driver");
@@ -55,6 +213,7 @@ public class MenuSystem {
 
                         choice1 = scanner.nextInt();
                         scanner.nextLine();
+
                         switch (choice1) {
                             case 1:
                                 //Displays Drivers
@@ -98,10 +257,9 @@ public class MenuSystem {
                                 System.out.println("\n--- Invalid option ---\n");
                         }
                     } while (choice1 != 6);
-                    break;
-//---------------------------------------------------------------------------------------------------//
-                case 2: //Races
-                    int choice2;
+                    break; */
+
+/*
                     do {
                         //Menu Options for Races
                         System.out.println("\n--- Races ---\n");
@@ -143,50 +301,4 @@ public class MenuSystem {
                                 System.out.println("\n--- Invalid option ---\n");
                         }
                     } while (choice2 != 6);
-                    break;
-
-//--------------------------------------------------------------------------------------------------//
-                case 3: //Championships
-                    //Menu Options for Championship Standings
-                    System.out.println("\n--- Championship Standings ---\n");
-                    break;
-
-//--------------------------------------------------------------------------------------------------//
-                case 4: //Save Data to File
-                    System.out.println("\n--- Save Data to File ---\n");
-
-
-                    //-------------------------------------------------------------------------------//
-
-                case 5: //Exit
-                    System.out.println("\nEnter file path to save (or press Enter to skip):\n");
-                    String savePath = scanner.nextLine().trim();
-
-                    if (!savePath.isEmpty()) {
-                        boolean saveResult = fileManager.saveToFile(savePath, informationManager);
-                        if (saveResult.isPresent()) {
-                            System.out.println("Save successful");
-
-                        } else {
-                            System.out.println("Save failed");
-                        }
-                    }
-                    System.out.println("EXITING FORMULA 1 DATA MANAGEMENT SYSTEM");
-                    break;
-
-                    //Invalid input
-                default:
-                    System.out.println("INVALID SELECTION");
-            }
-
-        }
-        while (selectChoice != 4);
-
-        return true;
-
-
-        }
-    }
-
-}
-
+                    break; */

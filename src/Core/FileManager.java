@@ -12,6 +12,8 @@ import java.util.Scanner;
  */
 public class FileManager {
 
+
+    // Method to load data from a file, returns true if successful, otherwise false
     public boolean loadFromFile(String fileName, InformationManager informationManager) {
         try {
             File file = new File(fileName);
@@ -35,13 +37,13 @@ public class FileManager {
                 }
 
                 try {
-                    String[] parts = line.split("-");
-                    if (parts.length != 2) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length < 2) {
                         throw new IllegalArgumentException("Incorrect format.");
                     }
 
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Incorrect format.");
+                    System.out.println("Incorrect format at line " + lineNumber + ": " + e.getMessage());
 
                 }
 
@@ -49,6 +51,50 @@ public class FileManager {
             return true;
         } catch (Exception e) {
             System.out.println("Error loading file");
+            return false;
+        }
+    }
+
+    // Method to save data to a file, returns true if successful, otherwise false
+    public boolean saveToFile(String fileName, InformationManager informationManager) {
+         try {
+            PrintWriter writer = new PrintWriter(fileName);
+
+            ArrayList<Driver> drivers = informationManager.getDriversData();
+            for (Driver driver : drivers) {
+                writer.println("DRIVER|"
+                        + driver.getDriverId() + "|"
+                        + driver.getDriverName() + "|"
+                        + driver.getNationality() + "|"
+                        + driver.getTeam() + "|"
+                        + driver.getCarNumber() + "|"
+                        + driver.getTotalPoints() + "|"
+                        + driver.getRaceWins() + "|"
+                        + driver.getRaceEntered() + "|"
+                        + driver.getPodiums() + "|"
+                        + driver.isActiveStatus());
+            }
+            
+             ArrayList<Race> races = informationManager.getRacesData();
+            for (Race race : races) {
+                Driver driver = race.getDriver();
+                int driverId = (driver != null) ? driver.getDriverId() : -1;
+                writer.println("RACE|"
+                        + race.getRaceId() + "|"
+                        + driverId + "|"
+                        + race.getRaceName() + "|"
+                        + race.getLocation() + "|"
+                        + race.getCountry() + "|"
+                        + race.getDate() + "|"
+                        + race.getTotalLaps() + "|"
+                        + race.getPosition() + "|"
+                        + race.getResult());
+            }
+            writer.close();
+       
+        return true;
+        } catch (Exception e) {
+            System.out.println("Error saving file: " + e.getMessage());
             return false;
         }
     }
