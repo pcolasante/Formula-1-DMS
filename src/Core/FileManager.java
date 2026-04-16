@@ -1,5 +1,8 @@
 package Core;
-
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 import java.io.File;
 import java.util.Scanner;
 
@@ -25,29 +28,31 @@ public class FileManager {
                 return false;
             }
 
-            Scanner scanner = new Scanner(file);
-            int lineNumber = 0;
-            while (scanner.hasNextLine()) {
-                lineNumber++;
-                String line = scanner.nextLine();
-                line = line.trim();
+            try (Scanner scanner = new Scanner(file)) {
+                int lineNumber = 0;
+                while (scanner.hasNextLine()) {
+                    lineNumber++;
+                    String line = scanner.nextLine();
+                    line = line.trim();
 
-                if (line.isEmpty()) {
-                    continue;
-                }
-
-                try {
-                    String[] parts = line.split("\\|");
-                    if (parts.length < 2) {
-                        throw new IllegalArgumentException("Incorrect format.");
+                    if (line.isEmpty()) {
+                        continue;
                     }
 
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Incorrect format at line " + lineNumber + ": " + e.getMessage());
+                    try {
+                        String[] parts = line.split("\\|");
+                        if (parts.length < 2) {
+                            throw new IllegalArgumentException("Incorrect format.");
+                        }
+
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Incorrect format at line " + lineNumber + ": " + e.getMessage());
+
+                    }
 
                 }
-
             }
+            
             return true;
         } catch (Exception e) {
             System.out.println("Error loading file");
@@ -57,8 +62,7 @@ public class FileManager {
 
     // Method to save data to a file, returns true if successful, otherwise false
     public boolean saveToFile(String fileName, InformationManager informationManager) {
-         try {
-            PrintWriter writer = new PrintWriter(fileName);
+         try (PrintWriter writer = new PrintWriter(fileName)) {
 
             ArrayList<Driver> drivers = informationManager.getDriversData();
             for (Driver driver : drivers) {
@@ -90,8 +94,7 @@ public class FileManager {
                         + race.getPosition() + "|"
                         + race.getResult());
             }
-            writer.close();
-       
+            
         return true;
         } catch (Exception e) {
             System.out.println("Error saving file: " + e.getMessage());
