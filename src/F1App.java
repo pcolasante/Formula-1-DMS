@@ -2,6 +2,7 @@ import Core.ChampionshipCalculator;
 import Core.DataValidation;
 import Core.FileManager;
 import Core.InformationManager;
+import Core.MenuSystem;
 
 import java.awt.*;
 
@@ -48,10 +49,19 @@ public class F1App {
     //Create and start the menu system, returning true if the user chooses to exit
     public boolean run() {
         MenuSystem menu = new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
-        return menu.start();
+        boolean started = menu.start();
+        if (!started) {
+            System.out.println("Failed to start the menu system. Exiting application.");
+            return false;
+        }
+
+        return true;
     }
 
-    
+    //Builds menu system, easier testing.
+    private MenuSystem buildMenuSystem() {
+        return new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
+    }
 
     // Main method to launch the application
     public static void main(String[] args) {

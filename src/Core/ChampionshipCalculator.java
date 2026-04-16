@@ -1,9 +1,9 @@
 package Core;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
@@ -26,10 +26,10 @@ public class ChampionshipCalculator {
             return standings;
         }
 
-        for (Race r : results) {
-            Driver driver = r.getDriver();
+        for (Race race : results) {
+            Driver driver = race.getDriver();
             String driverName = (driver != null) ? driver.getDriverName() : "Unknown";
-            standings.put(driverName, standings.getOrDefault(driverName, 0) + r.getResult());
+            standings.put(driverName, standings.getOrDefault(driverName, 0) + race.getResult());
         }
 
         System.out.println("\nChampionship Standings:");

@@ -1,5 +1,5 @@
 import Core.*;
-
+import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -193,11 +193,97 @@ public class MenuSystem {
         }
 
         private boolean addDriver() {
-            return informationManager.addDriver();
+            Driver driver = promptDriver(scanner, "Add Driver");
+            boolean added = informationManager.addDriver(driver);
+            if (added) {
+                System.out.println("Driver added successfully.");
+                return true;
+            }
+            System.out.println("Failed to add driver. Duplicate ID found. Please try again.");
+            return false;
         }
+
+        private boolean updateDriver(Scanner scanner) {
+            int driverId = readMenuChoice(scanner, "Enter the ID of the driver to update: ");
+            Driver updatedDriver = promptDriver(scanner, "Update Driver");
+            boolean updated = informationManager.updateDriverById(driverId, updatedDriver);
+            if (updated) {
+                System.out.println("Driver updated successfully.");
+                return true;
+            }
+            System.out.println("Failed to update driver. Driver with ID " + driverId + " not found. Please try again.");
+            return false;
+        }
+
+        private boolean deleteDriver(Scanner scanner) {
+            int driverId = readMenuChoice(scanner, "Enter the ID to delete the Driver: ");
+            boolean removed = informationManager.removeDriver(driverId);
+            if (removed) {
+                System.out.println("Driver deleted successfully.");
+                return true;
+        }
+
+        System.out.println("Failed to delete driver. Driver with ID " + driverId + " not found. Please try again.");
+        return false;
+        }
+
+        /*-----------------------------RACES----------------------------- */
+
+        private boolean addRace(Scanner scanner) {
+            Race race = promptRace(scanner, "Add Race");
+            boolean added = informationManager.addRace(race);
+            if (added) {
+                System.out.println("Race added successfully.");
+                return true;
+            }
+            
+            System.out.println("Failed to add race. Duplicate ID found. Please try again.");
+            return false;
+
+        }
+
+        private boolean updateRace(Scanner scanner) {
+            int raceId = readMenuChoice(scanner, "Enter the ID of the race to update: ");
+            Race updatedRace = promptRace(scanner, "Update  Race");
+            boolean updated = informationManager.updateRaceById(raceId, updatedRace);
+            if (updated) {
+                System.out.println("Race updated successfully.");
+                return true;
+            }
+            System.out.println("Failed to update race. Race with ID " + raceId + " not found. Please try again.");
+            return false;
+        }   
+
+        private boolean deleteRace(Scanner scanner) {
+            int raceId = readMenuChoice(scanner, "Enter the ID to delete the race: ");
+            boolean removed = informationManager.removeRace(raceId);
+            if (removed) {
+                System.out.println("Race deleted successfully.");
+                return true;
+            }
+            System.out.println("Failed to delete race. Race with ID " + raceId + " not found. Please try again.");
+            return false;
+        }
+
+        private boolean loadFromFile(Scanner scanner) {
+            String fileName = readNonEmptyLine(scanner, "Enter the file name: ");
+            boolean loaded = informationManager.loadFromFile(fileName, informationManager);
+            System.out.println(loaded ? "Finished processing file." : "File loading failed. Please try again.");
+            return loaded;
+        }
+
+        private boolean saveToFile(Scanner scanner) {
+            String fileName = readNonEmptyLine(scanner, "Enter the file name to save: ");
+            boolean saved = informationManager.saveToFile(fileName, informationManager);
+            System.out.println(saved ? "Data saved successfully to file." : "Failed to save data. Please try again.");
+            return saved;
+        }
+
+        //continue here
+
     }
 
-}
+
 
 /*int choice1;
                     do {

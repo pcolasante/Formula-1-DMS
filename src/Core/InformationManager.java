@@ -1,5 +1,5 @@
 package Core;
-
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /*Author: Paulina Flores Colasante
@@ -68,6 +68,17 @@ public class InformationManager {
         return false;
     }
 
+    //Updates driver in database by ID
+    public boolean updateDriverById(int driverId, Driver updatedDriver) {
+    for (int i = 0; i < drivers.size(); i++) {
+        if (drivers.get(i).getDriverId() == driverId) {
+            drivers.set(i, updatedDriver);
+            return true;
+        }
+    }
+    return false;
+}
+
     //Removes driver from database
     public boolean removeDriver(int driverId) {
         for (int i = 0; i < drivers.size(); i++) {
@@ -132,6 +143,17 @@ public class InformationManager {
             return true;
         }
         return false;
+    }
+
+    //Updates Race in database by ID
+    public boolean updateRaceById(int raceId, Race updatedRace) {
+    for (int i = 0; i < races.size(); i++) {
+        if (races.get(i).getRaceId() == raceId) {
+            races.set(i, updatedRace);
+            return true;
+        }
+    }
+    return false;
     }
 
     //deletes race from database
