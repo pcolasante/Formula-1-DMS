@@ -2,9 +2,10 @@ import Core.ChampionshipCalculator;
 import Core.DataValidation;
 import Core.FileManager;
 import Core.InformationManager;
-import Core.MenuSystem;
+
 
 import java.awt.*;
+import java.util.Objects;
 
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
@@ -42,8 +43,8 @@ public class F1App {
                  ChampionshipCalculator calculator) {
         this.validator = Objects.requireNonNull(validator, "Validator is required");
         this.fileManager = Objects.requireNonNull(fileManager, "FileManager is required");
-        this.manager = Objects.requireNonNull(manager, "Manager is required");
-        this.calculator = Objects.requireNonNull(calculator, "Calculator is required");
+        this.informationManager = Objects.requireNonNull(manager, "Manager is required");
+        this.championshipCalculator = Objects.requireNonNull(calculator, "Calculator is required");
     }
 
     //Create and start the menu system, returning true if the user chooses to exit
