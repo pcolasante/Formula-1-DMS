@@ -1,4 +1,5 @@
 import Core.*;
+
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,16 +18,18 @@ public class MenuSystem {
     private final InformationManager informationManager;
     private final FileManager fileManager;
     private final DataValidation validator;
-    private final ChampionshipCalculator calculator;
+    private final ChampionshipCalculator championshipCalculator;
+    private String autoSaveFileName;
 
     // Constructor for MenuSystem, initializes all components with the provided instances, ensuring separation of concerns and modularity
     public MenuSystem(InformationManager informationManager, FileManager fileManager,
-                      DataValidation validator, ChampionshipCalculator calculator) {
+                      DataValidation validator, ChampionshipCalculator championshipCalculator) {
 
         this.informationManager = informationManager;
         this.fileManager = fileManager;
         this.validator = validator;
-        this.calculator = calculator;
+        this.championshipCalculator = championshipCalculator;
+        this.autoSaveFileName = "f1-data.txt";
 
     }
 
@@ -70,7 +73,7 @@ public class MenuSystem {
 
                 /*--------------- Menu Options for Exiting the Program -------------------*/
                 case 5: 
-
+                    runProtectedAction("auto-save before exit", this::autoSaveCurrentData);
                     System.out.println("EXITING FORMULA 1 DATA MANAGEMENT SYSTEM");
                     break;
 
@@ -108,19 +111,19 @@ public class MenuSystem {
                         break;
                     case 2:
                         //Adds a Driver
-                        runProtectedAction("Add Driver", () -> informationManager.addDriver() ? 1 : -1);
+                        runProtectedAction("Add Driver", () -> addDriver(scanner) ? 1 : -1);
                         break;
                     case 3:
                         //Update a Driver
-                        runProtectedAction("Update Driver", () -> informationManager.updateDriver() ? 1 : -1);
+                        runProtectedAction("Update Driver", () -> updateDriver(scanner) ? 1 : -1);
                         break;
                     case 4:
                         //Delete a Driver
-                        runProtectedAction("Delete Driver", () -> informationManager.removeDriver() ? 1 : -1);
+                        runProtectedAction("Delete Driver", () -> deleteDriver(scanner) ? 1 : -1);
                         break;
                     case 5:
                         //Load Driver from File
-                        runProtectedAction("Load Drivers", () -> informationManager.loadFromFile() ? 1 : -1);
+                        runProtectedAction("Load Drivers", () -> loadFromFile(scanner) ? 1 : -1);
                         break;
                     case 6:
                         //Returning to Main Menu
@@ -134,6 +137,7 @@ public class MenuSystem {
             return choice; 
         }
 
+        //Handles the Race Menu, allowing the user to view, add, update, delete, and load races from a file. Returns the user's choice to the main menu.
         private int handleRacesMenu(Scanner scanner) {
             int choice;
 
@@ -150,19 +154,24 @@ public class MenuSystem {
 
                 switch (choice) {
                     case 1:
+                        //Displays Races
                         runProtectedAction("View Races", () -> informationManager.getAllRaces().size());
                         break;
                     case 2:
-                        runProtectedAction("Add Race", () -> informationManager.addRace() ? 1 : -1);
+                        //Adds a Race
+                        runProtectedAction("Add Race", () -> addRace(scanner) ? 1 : -1);
                         break;
                     case 3:
-                        runProtectedAction("Update Race", () -> informationManager.updateRace() ? 1 : -1);
+                        //Update a Race
+                        runProtectedAction("Update Race", () -> updateRace(scanner) ? 1 : -1);
                         break;
                     case 4:
-                        runProtectedAction("Delete Race", () -> informationManager.deleteRace() ? 1 : -1);
+                        //Delete a Race
+                        runProtectedAction("Delete Race", () -> deleteRace(scanner) ? 1 : -1);
                         break;
                     case 5:
-                        runProtectedAction("Load Races", () -> informationManager.loadFromFile() ? 1 : -1);
+                        //Load a Race from File
+                        runProtectedAction("Load Races", () -> loadFromFile(scanner) ? 1 : -1);
                         break;
                     case 6:
                         //Returning to Main Menu
@@ -178,6 +187,7 @@ public class MenuSystem {
 
         }
 
+        //Method to run protected actions, with error handling to ensure the program continues running smoothly even if an action fails. 
         private int runProtectedAction(String actionName, Action action) {
             try {
                 return action.execute();
@@ -187,39 +197,49 @@ public class MenuSystem {
             }
         }
 
+        //Method to show the championship standings, returns the number of drivers in the standings for confirmation.
         private int showStandings() {
             System.out.println("\n--- Championship Standings ---\n");
-            return calculator.calculateStandings(manager.getAllRaces()).size();
+            return championshipCalculator.calculateStandings(informationManager.getAllRaces()).size();
         }
 
-        private boolean addDriver() {
+        /* ------------------------------------------------------------------------------------ DRIVERS ------------------------------------------------------------------------------------- */
+
+
+        //Method to add a Driver to file, returns true if successful, otherwise false.
+        private boolean addDriver(Scanner scanner) {
             Driver driver = promptDriver(scanner, "Add Driver");
             boolean added = informationManager.addDriver(driver);
             if (added) {
                 System.out.println("Driver added successfully.");
+                autoSaveAfterChange("Driver Add");
                 return true;
             }
             System.out.println("Failed to add driver. Duplicate ID found. Please try again.");
             return false;
         }
 
+        //Method to update a Driver in file, returns true if successful, otherwise false.
         private boolean updateDriver(Scanner scanner) {
             int driverId = readMenuChoice(scanner, "Enter the ID of the driver to update: ");
             Driver updatedDriver = promptDriver(scanner, "Update Driver");
             boolean updated = informationManager.updateDriverById(driverId, updatedDriver);
             if (updated) {
                 System.out.println("Driver updated successfully.");
+                autoSaveAfterChange("Driver Update");
                 return true;
             }
             System.out.println("Failed to update driver. Driver with ID " + driverId + " not found. Please try again.");
             return false;
         }
 
+        //Method to delete a Driver from file, returns true if successful, otherwise false.
         private boolean deleteDriver(Scanner scanner) {
             int driverId = readMenuChoice(scanner, "Enter the ID to delete the Driver: ");
             boolean removed = informationManager.removeDriver(driverId);
             if (removed) {
                 System.out.println("Driver deleted successfully.");
+                autoSaveAfterChange("Driver Delete");
                 return true;
         }
 
@@ -227,13 +247,15 @@ public class MenuSystem {
         return false;
         }
 
-        /*-----------------------------RACES----------------------------- */
+        /* ------------------------------------------------------------------------------------RACES ------------------------------------------------------------------------------------- */
 
+        //Method to add a Race to file, returns true if successful, otherwise false.
         private boolean addRace(Scanner scanner) {
             Race race = promptRace(scanner, "Add Race");
             boolean added = informationManager.addRace(race);
             if (added) {
                 System.out.println("Race added successfully.");
+                autoSaveAfterChange("Race Add");
                 return true;
             }
             
@@ -242,149 +264,156 @@ public class MenuSystem {
 
         }
 
+        //Method to update a Race in file, returns true if successful, otherwise false.
         private boolean updateRace(Scanner scanner) {
             int raceId = readMenuChoice(scanner, "Enter the ID of the race to update: ");
             Race updatedRace = promptRace(scanner, "Update  Race");
             boolean updated = informationManager.updateRaceById(raceId, updatedRace);
             if (updated) {
                 System.out.println("Race updated successfully.");
+                autoSaveAfterChange("Race Update");
                 return true;
             }
             System.out.println("Failed to update race. Race with ID " + raceId + " not found. Please try again.");
             return false;
         }   
 
+        //Method to delete a Race from file, returns true if successful, otherwise false.
         private boolean deleteRace(Scanner scanner) {
             int raceId = readMenuChoice(scanner, "Enter the ID to delete the race: ");
-            boolean removed = informationManager.removeRace(raceId);
+            boolean removed = informationManager.deleteRace(raceId);
             if (removed) {
                 System.out.println("Race deleted successfully.");
+                autoSaveAfterChange("Race Delete");
                 return true;
             }
             System.out.println("Failed to delete race. Race with ID " + raceId + " not found. Please try again.");
             return false;
         }
 
+        //Method to load data from a file, returns true if successful, otherwise false.
         private boolean loadFromFile(Scanner scanner) {
             String fileName = readNonEmptyLine(scanner, "Enter the file name: ");
-            boolean loaded = informationManager.loadFromFile(fileName, informationManager);
+            boolean loaded = fileManager.loadFromFile(fileName, informationManager);
             System.out.println(loaded ? "Finished processing file." : "File loading failed. Please try again.");
             return loaded;
         }
 
+        //Method to save and auto-save data to a file, returns true if successful, otherwise false.
         private boolean saveToFile(Scanner scanner) {
             String fileName = readNonEmptyLine(scanner, "Enter the file name to save: ");
-            boolean saved = informationManager.saveToFile(fileName, informationManager);
+            boolean saved = fileManager.saveToFile(fileName, informationManager);
+            if (saved) {
+                autoSaveFileName = fileName;
+            }
             System.out.println(saved ? "Data saved successfully to file." : "Failed to save data. Please try again.");
             return saved;
         }
 
-        //continue here
+        //Method to auto-save current data to a file, returns 1 if successful, otherwise -1.
+        private int autoSaveCurrentData() {
+            boolean saved = fileManager.saveToFile(autoSaveFileName, informationManager);
+            if (saved) {
+                return 1;
+            }
 
+            System.out.println("Auto-save failed. Please ensure you have saved data to a file at least once during this session.");
+            return -1;
+        }
+
+        //Method to auto-save data after changes, providing feedback to the user about the auto-save status.
+        private void autoSaveAfterChange(String changeType) {
+            int result = autoSaveCurrentData();
+            if (result > 0) {
+                System.out.println("Auto-saved after " + changeType + " to file: " + autoSaveFileName + ".");
+            }
+        }
+
+        //Method to prompt the Driver's information from the user, returns a Driver object with the provided information.
+        private Driver promptDriver (Scanner scanner, String action) {
+            System.out.println("\n--- " + action + " ---\n");
+            int id = readMenuChoice(scanner, "Enter Driver ID:");
+            String name = readNonEmptyLine(scanner, "Name: ");
+            String nationality = readNonEmptyLine(scanner, "Nationality: ");
+            String team = readNonEmptyLine(scanner, "Team: ");
+            int carNumber = readMenuChoice(scanner, "Car number: ");
+            int totalPoints = readMenuChoice(scanner, "Total points: ");
+            int raceWins = readMenuChoice(scanner, "Race wins: ");
+            int racesEntered = readMenuChoice(scanner, "Races entered: ");
+            int podiums = readMenuChoice(scanner, "Podiums: ");
+            boolean activeStatus = readBoolean(scanner, "Active status (true/false): ");
+            return new Driver(id, name, nationality, team, carNumber, totalPoints, raceWins, racesEntered, podiums, activeStatus);
+
+        }
+
+        //Method to prompt the Race information from the user, returns a Race object with the provided information.
+        private Race promptRace(Scanner scanner, String action) {
+        System.out.println("--- " + action + " ---");
+        int raceId = readMenuChoice(scanner, "Race ID: ");
+        Driver driver = readExistingDriver(scanner);
+        String raceName = readNonEmptyLine(scanner, "Race name: ");
+        String location = readNonEmptyLine(scanner, "Location: ");
+        String country = readNonEmptyLine(scanner, "Country: ");
+        String date = readNonEmptyLine(scanner, "Date: ");
+        int totalLaps = readMenuChoice(scanner, "Total laps: ");
+        int position = readMenuChoice(scanner, "Position: ");
+        int result = readMenuChoice(scanner, "Points earned: ");
+
+        return new Race(raceId, driver, raceName, location, country, date, totalLaps, position, result);
     }
 
+        //Method to read an existing Driver's ID from the user and return the corresponding Driver object, ensuring that the driver exists before proceeding.
+        private Driver readExistingDriver(Scanner scanner) {
+            while (true) {
+                int driverId = readMenuChoice(scanner, "Enter Driver ID: ");
+                Driver driver = informationManager.getDriverById(driverId);
+                if (driver != null) {
+                    return driver;
+                }
+                System.out.println("Driver not found. Please try again.");
+            }
+        }
 
+        //Method to read a menu choice from the user, ensuring that the input is a valid positive integer, and returns the parsed integer value.
+        private int readMenuChoice(Scanner scanner, String prompt) {
+            while (true) {
+                System.out.print(prompt);
+                String input = scanner.nextLine();
+                Integer parsed = validator.parseInt(input);
+                if (parsed != null && validator.isValidPositiveInt(parsed)) {
+                    return parsed;
+                }
+                System.out.println("Invalid input. Please enter a positive integer. Try again.");
+            }
+        }
 
-/*int choice1;
-                    do {
-                        
-                        System.out.println("\n--- Drivers ---\n");
-                        System.out.println("1. View Drivers");
-                        System.out.println("2. Add Driver");
-                        System.out.println("3. Update Driver");
-                        System.out.println("4. Delete Driver");
-                        System.out.println("5. Load Driver from file");
-                        System.out.println("6. Return to Main Menu");
-                        System.out.print("Select an option: ");
+        //Method to read a non-empty string from the user, ensuring that the input is valid and not empty, and returns the trimmed string value.
+        private String readNonEmptyLine(Scanner scanner, String prompt) {
+            while (true) {
+                System.out.print(prompt);
+                String input = scanner.nextLine();
+                if (validator.isValidString(input)) {
+                    return input.trim();
+                }
+                System.out.println("Invalid input. This value cannot be empty. Please try again.");
+            }
+        }
 
-                        choice1 = scanner.nextInt();
-                        scanner.nextLine();
+        //Method to read a boolean value from the user, ensuring that the input is either "true" or "false", and returns the corresponding boolean value.
+        private boolean readBoolean(Scanner scanner, String prompt) {
+            while (true) {
+                System.out.print(prompt);
+                String input = scanner.nextLine().trim().toLowerCase();
+                if (input.equals("true")) {
+                    return true;
+                } else if (input.equals("false")) {
+                    return false;
+                }
+                System.out.println("Invalid input. Please enter 'true' or 'false'.");
+            }
+        }
 
-                        switch (choice1) {
-                            case 1:
-                                //Displays Drivers
-                                System.out.println("\n--- Drivers ---\n");
-                                ArrayList<Driver> allDrivers = informationManager.getAllDrivers();
-                                if (allDrivers.isEmpty()) {
-                                    System.out.println("No Drivers in the System");
-                                } else {
-                                    System.out.println("Drivers in the System");
-                                    for (Driver driver : allDrivers) {
-                                        System.out.println(driver);
-                                    }
-                                }
-                                break;
-                            case 2:
-                                //Adds a Driver
-                                System.out.println("\n--- Add a Driver ---\n");
-                                informationManager.addDriver();
-                                break;
-                            case 3:
-                                //Update a Driver
-                                System.out.println("\n--- Update a Driver ---\n");
-                                informationManager.updateDriver();
-                                break;
-                            case 4:
-                                //Delete a Driver
-                                System.out.println("\n--- Delete a Driver ---\n");
-                                informationManager.removeDriver();
-                                break;
-                            case 5:
-                                //Load Driver from File
-                                System.out.println("\n--- Load Driver from file ---\n");
-                                informationManager.loadDrivers();
-                                break;
-                            case 6:
-                                //Returning to Main Menu
-                                System.out.println("\n--- Return to Main Menu ---\n");
-                                break;
-                            default:
-                                //Input validation
-                                System.out.println("\n--- Invalid option ---\n");
-                        }
-                    } while (choice1 != 6);
-                    break; */
-
-/*
-                    do {
-                        //Menu Options for Races
-                        System.out.println("\n--- Races ---\n");
-                        System.out.println("1. View Races");
-                        System.out.println("2. Add Race");
-                        System.out.println("3. Update Race");
-                        System.out.println("4. Delete Race");
-                        System.out.println("5. Load Race from file");
-                        System.out.println("6. Return to Main Menu");
-                        System.out.print("Select an option: ");
-
-                        choice2 = scanner.nextInt();
-                        scanner.nextLine();
-                        switch (choice2) {
-                            case 1:
-                                System.out.println("\n--- Races ---\n");
-                                informationManager.getAllRaces();
-                                break;
-                            case 2:
-                                System.out.println("\n--- Add a Race ---\n");
-                                informationManager.addRace();
-                                break;
-                            case 3:
-                                System.out.println("\n--- Update a Race ---\n");
-                                informationManager.updateRace();
-                                break;
-                            case 4:
-                                System.out.println("\n--- Delete a Race ---\n");
-                                informationManager.deleteRace();
-                                break;
-                            case 5:
-                                System.out.println("\n--- Load Race from file ---\n");
-                                informationManager.loadRaces();
-                                break;
-                            case 6:
-                                System.out.println("\n--- Return to Main Menu ---\n");
-                                break;
-                            default:
-                                System.out.println("\n--- Invalid option ---\n");
-                        }
-                    } while (choice2 != 6);
-                    break; */
+        private interface Action {
+            int execute() throws Exception;
+        }
+    }

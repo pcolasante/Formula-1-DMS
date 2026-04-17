@@ -1,6 +1,11 @@
 package Core;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Objects;
+import java.util.InputMismatchException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
