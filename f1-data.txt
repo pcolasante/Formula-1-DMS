@@ -15,3 +15,8 @@ DRIVER|22|Yuki Tsunoda|22|JP|Racing Bulls|24|0|0|33|true
 RACE|1|1|LOUIS VUITTON AUSTRALIAN GRAND PRIX 2025|Albert Park Grand Prix Circuit, Melbourne|Australia|16 MAR 2025|58|1|25
 RACE|2|81|HEINEKEN CHINESE GRAND PRIX 2025|Shanghai International Circuit, Shanghai|China|23 MAR 2025|56|1|32
 RACE|3|3|LENOVO JAPANESE GRAND PRIX 2025|Suzuka Circuit, Suzuka|Japan|06 Apr 2025|25|1|32
+RACE|4|81|GULF AIR BAHRAIN GRAND PRIX 2025|Bahrain International Circuit, Sakhir|Bahrain|13 Apr 2025|57|1|25
+RACE|5|81|STC SAUDI ARABIAN GRAND PRIX 2025|Jeddah Corniche Circuit, Jeddah|Saudi Arabia|20 Apr 2025|50|1|25
+RACE|6|81|CRYPTO.COM MIAMI GRAND PRIX 2025|Miami International Autodrome, Miami Gardens|USA|04 May 2025|57|1|25
+RACE|7|3|AWS GRAN PREMIO DEL MADE IN ITALY E DELL'EMILIA-ROMAGNA 2025|Autodromo Internazionale Enzo e Dino Ferrari, Imola|Italy|18 May 2025|63|1|25
+RACE|8|1|TAG HEUER GRAND PRIX DE MONACO 2025|Circuit de Monaco, Monaco|Monaco|25 May 2025|78|1|25
