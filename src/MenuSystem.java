@@ -301,7 +301,7 @@ public class MenuSystem {
 
         //Method to load data from a file, returns true if successful, otherwise false.
         private boolean loadFromFile(Scanner scanner) {
-            String fileName = readNonEmptyLine(scanner, "Enter the file name: ");
+            String fileName = readNonEmptyLine(scanner, "Enter the file name: ", true);
             boolean loaded = fileManager.loadFromFile(fileName, informationManager);
             System.out.println(loaded ? "Finished processing file." : "File loading failed. Please try again.");
             return loaded;
@@ -309,7 +309,7 @@ public class MenuSystem {
 
         //Method to save and auto-save data to a file, returns true if successful, otherwise false.
         private boolean saveToFile(Scanner scanner) {
-            String fileName = readNonEmptyLine(scanner, "Enter the file name to save: ");
+            String fileName = readNonEmptyLine(scanner, "Enter the file name to save: ", true);
             boolean saved = fileManager.saveToFile(fileName, informationManager);
             if (saved) {
                 autoSaveFileName = fileName;
@@ -352,10 +352,10 @@ public class MenuSystem {
                     break;
                 }
             }
-            String name = readNonEmptyLine(scanner, "Name: ");
+            String name = readNonEmptyLine(scanner, "Name: ", false);
             int carNumber = readMenuChoice(scanner, "Car number: ");
-            String nationality = readNonEmptyLine(scanner, "Nationality: ");
-            String team = readNonEmptyLine(scanner, "Team: ");
+            String nationality = readNonEmptyLine(scanner, "Nationality: ", false);
+            String team = readNonEmptyLine(scanner, "Team: ", false);
             int racesEntered = readMenuChoice(scanner, "Races entered: ");
             int podiums = readMenuChoice(scanner, "Podiums: ");
             int raceWins = readMenuChoice(scanner, "Race wins: ");
@@ -382,10 +382,10 @@ public class MenuSystem {
             }
 
         Driver driver = readExistingDriverOrNone(scanner);
-        String raceName = readNonEmptyLine(scanner, "Race name: ");
-        String location = readNonEmptyLine(scanner, "Location: ");
-        String country = readNonEmptyLine(scanner, "Country: ");
-        String date = readNonEmptyLine(scanner, "Date: ");
+        String raceName = readNonEmptyLine(scanner, "Race name: ", true);
+        String location = readNonEmptyLine(scanner, "Location: ", false);
+        String country = readNonEmptyLine(scanner, "Country: ", false);
+        String date = readNonEmptyLine(scanner, "Date: ", true);
         int totalLaps = readMenuChoice(scanner, "Total laps: ");
         int position = readMenuChoice(scanner, "Position: ");
         int result = readMenuChoice(scanner, "Points earned: ");
@@ -429,14 +429,21 @@ public class MenuSystem {
         }
 
         //Method to read a non-empty string from the user, ensuring that the input is valid and not empty, and returns the trimmed string value.
-        private String readNonEmptyLine(Scanner scanner, String prompt) {
+        private String readNonEmptyLine(Scanner scanner, String prompt, boolean allowNumbers) {
             while (true) {
                 System.out.print(prompt);
                 String input = scanner.nextLine();
-                if (validator.isValidString(input)&& !input.matches(".*\\d.*")) {
+
+                boolean isValid = validator.isValidString(input);
+
+                if (!allowNumbers) {
+                    isValid = isValid && !input.matches(".*\\d.*");
+                }
+
+                if (isValid) {
                     return input.trim();
                 }
-                System.out.println("Invalid input. This value cannot be empty. Please try again.");
+                System.out.println("Invalid input. This value cannot be empty nor contain numbers. Please try again.");
             }
         }
 
