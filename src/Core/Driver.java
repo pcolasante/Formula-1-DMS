@@ -27,7 +27,7 @@ public class Driver {
 
 
     // Constructor for Driver, initializes all fields with the provided values, ensuring that each driver has a unique ID and complete information
-    public Driver(int driverId, String driverName, String nationality, String team, int carNumber, int totalPoints, int raceWins, int raceEntered, int podiums, boolean activeStatus) {
+    public Driver(int driverId, String driverName, int carNumber, String nationality, String team, int raceEntered, int podiums, int raceWins, int totalPoints, boolean activeStatus) {
         this.driverId = driverId;
         this.driverName = driverName;
         this.nationality = nationality;
@@ -100,16 +100,15 @@ public class Driver {
     @Override
     public String toString() {
         return driverId +
-                " | " + driverName + '\'' +
+                " | " + driverName +
                 " | Car Number: " + carNumber +
-                " | Nationality: " + nationality + '\'' +
-                " | Team: " + team + '\'' +
+                " | Nationality: " + nationality +
+                " | Team: " + team +
                 " | Races Entered: " + raceEntered +
                 " | Podiums: " + podiums +
                 " | Race Wins: " + raceWins +
                 " | Total Points: " + totalPoints +
-                " | Active Status: " + activeStatus +
-                '}';
+                " | Active Status: " + activeStatus;
     }
 
 }
