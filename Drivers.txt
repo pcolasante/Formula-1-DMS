@@ -1,2 +1,0 @@
-DRIVER|1|Lando Norris|1|UK|McLaren|24|18|7|423|true
-DRIVER|2|Max Verstappen|3|NL|Red Bull|24|15|8|421|true

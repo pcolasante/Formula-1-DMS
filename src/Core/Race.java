@@ -91,10 +91,10 @@ public class Race {
     public String toString() {
         String driverLabel = (driver != null) ? driver.getDriverName() + " (#" + driver.getDriverId() + ")" : "Unknown Driver";
         return raceId +
-                " |  " + raceName + '\'' +
-                " |  " + location + '\'' +
-                " |  " + country + '\'' +
-                " | Date: " + date + '\'' +
+                " |  " + raceName + 
+                " |  " + location + 
+                " |  " + country + 
+                " | Date: " + date + 
                 " | Total Laps: " + totalLaps +
                 " | Position: " + position +
                 " | Result: " + result +

@@ -43,11 +43,11 @@ public class ChampionshipCalculator {
         }
 
         if (standings.isEmpty()) {
-            System.out.println("No results on record.");
+            System.out.println(" \n No Results on record. \n");
             return standings;
         }
 
-        System.out.println("\nChampionship Standings:");
+        System.out.println("\n--- Championship Standings ---\n");
 
         standings.entrySet()
                 .stream()
