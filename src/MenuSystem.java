@@ -213,6 +213,7 @@ public class MenuSystem {
             if (added) {
                 System.out.println("Driver added successfully.");
                 autoSaveAfterChange("Driver Add");
+                informationManager.getAllDrivers();
                 return true;
             }
             System.out.println("Failed to add driver. Duplicate ID found. Please try again.");
@@ -221,12 +222,14 @@ public class MenuSystem {
 
         //Method to update a Driver in file, returns true if successful, otherwise false.
         private boolean updateDriver(Scanner scanner) {
+            informationManager.getAllDrivers();
             int driverId = readMenuChoice(scanner, "Enter the ID of the driver to update: ");
             Driver updatedDriver = promptDriver(scanner, "Update Driver");
             boolean updated = informationManager.updateDriverById(driverId, updatedDriver);
             if (updated) {
                 System.out.println("Driver updated successfully.");
                 autoSaveAfterChange("Driver Update");
+                informationManager.getAllDrivers();
                 return true;
             }
             System.out.println("Failed to update driver. Driver with ID " + driverId + " not found. Please try again.");
@@ -240,6 +243,7 @@ public class MenuSystem {
             if (removed) {
                 System.out.println("Driver deleted successfully.");
                 autoSaveAfterChange("Driver Delete");
+                informationManager.getAllDrivers();
                 return true;
         }
 
@@ -255,23 +259,26 @@ public class MenuSystem {
             boolean added = informationManager.addRace(race);
             if (added) {
                 System.out.println("Race added successfully.");
-                autoSaveAfterChange("Race Add");
+                autoSaveAfterChange("Race Add \n");
+                informationManager.getAllRaces();
                 return true;
             }
             
-            System.out.println("Failed to add race. Duplicate ID found. Please try again.");
+            System.out.println("Failed to add race. Please try again.");
             return false;
 
         }
 
         //Method to update a Race in file, returns true if successful, otherwise false.
         private boolean updateRace(Scanner scanner) {
+            informationManager.getAllRaces();
             int raceId = readMenuChoice(scanner, "Enter the ID of the race to update: ");
             Race updatedRace = promptRace(scanner, "Update  Race");
             boolean updated = informationManager.updateRaceById(raceId, updatedRace);
             if (updated) {
                 System.out.println("Race updated successfully.");
                 autoSaveAfterChange("Race Update");
+                informationManager.getAllRaces();
                 return true;
             }
             System.out.println("Failed to update race. Race with ID " + raceId + " not found. Please try again.");
@@ -285,6 +292,7 @@ public class MenuSystem {
             if (removed) {
                 System.out.println("Race deleted successfully.");
                 autoSaveAfterChange("Race Delete");
+                informationManager.getAllRaces();
                 return true;
             }
             System.out.println("Failed to delete race. Race with ID " + raceId + " not found. Please try again.");
@@ -332,25 +340,48 @@ public class MenuSystem {
         //Method to prompt the Driver's information from the user, returns a Driver object with the provided information.
         private Driver promptDriver (Scanner scanner, String action) {
             System.out.println("\n--- " + action + " ---\n");
-            int id = readMenuChoice(scanner, "Enter Driver ID:");
+           // int id = readMenuChoice(scanner, "Enter Driver ID:");
+
+            int id;
+            while (true) {
+                id = readMenuChoice(scanner, "Enter Driver ID: ");
+
+                if (informationManager.driverExists(id)) {
+                    System.out.println("This Driver ID already exists. Please enter a unique ID.");
+                } else {
+                    break;
+                }
+            }
             String name = readNonEmptyLine(scanner, "Name: ");
+            int carNumber = readMenuChoice(scanner, "Car number: ");
             String nationality = readNonEmptyLine(scanner, "Nationality: ");
             String team = readNonEmptyLine(scanner, "Team: ");
-            int carNumber = readMenuChoice(scanner, "Car number: ");
-            int totalPoints = readMenuChoice(scanner, "Total points: ");
-            int raceWins = readMenuChoice(scanner, "Race wins: ");
             int racesEntered = readMenuChoice(scanner, "Races entered: ");
             int podiums = readMenuChoice(scanner, "Podiums: ");
+            int raceWins = readMenuChoice(scanner, "Race wins: ");
+            int totalPoints = readMenuChoice(scanner, "Total points: ");
             boolean activeStatus = readBoolean(scanner, "Active status (true/false): ");
-            return new Driver(id, name, nationality, team, carNumber, totalPoints, raceWins, racesEntered, podiums, activeStatus);
+            return new Driver(id, name, carNumber, nationality, team, racesEntered, podiums, raceWins, totalPoints, activeStatus);
 
         }
 
         //Method to prompt the Race information from the user, returns a Race object with the provided information.
         private Race promptRace(Scanner scanner, String action) {
         System.out.println("--- " + action + " ---");
-        int raceId = readMenuChoice(scanner, "Race ID: ");
-        Driver driver = readExistingDriver(scanner);
+        //int raceId = readMenuChoice(scanner, "Race ID: ");
+
+            int raceId;
+            while (true) {
+                raceId = readMenuChoice(scanner, "Enter Race ID: ");
+
+                if (informationManager.raceExists(raceId)) {
+                    System.out.println("This Race ID already exists. Please enter a unique ID.");
+                } else {
+                    break;
+                }
+            }
+
+        Driver driver = readExistingDriverOrNone(scanner);
         String raceName = readNonEmptyLine(scanner, "Race name: ");
         String location = readNonEmptyLine(scanner, "Location: ");
         String country = readNonEmptyLine(scanner, "Country: ");
@@ -363,16 +394,26 @@ public class MenuSystem {
     }
 
         //Method to read an existing Driver's ID from the user and return the corresponding Driver object, ensuring that the driver exists before proceeding.
-        private Driver readExistingDriver(Scanner scanner) {
+        private Driver readExistingDriverOrNone(Scanner scanner) {
+            if (informationManager.getDriversData().isEmpty()) {
+                System.out.println("No drivers are available. Race will be saved without a linked driver.");
+                return null;
+            }
+
             while (true) {
-                int driverId = readMenuChoice(scanner, "Enter Driver ID: ");
+                int driverId = readMenuChoice(scanner, "Associated driver ID (0 for none): ");
+                if (driverId == 0) {
+                    return null;
+                }
+
                 Driver driver = informationManager.getDriverById(driverId);
                 if (driver != null) {
                     return driver;
                 }
-                System.out.println("Driver not found. Please try again.");
+                System.out.println("No driver found with that ID. Please try again or enter 0 for none.");
             }
         }
+
 
         //Method to read a menu choice from the user, ensuring that the input is a valid positive integer, and returns the parsed integer value.
         private int readMenuChoice(Scanner scanner, String prompt) {
@@ -392,7 +433,7 @@ public class MenuSystem {
             while (true) {
                 System.out.print(prompt);
                 String input = scanner.nextLine();
-                if (validator.isValidString(input)) {
+                if (validator.isValidString(input)&& !input.matches(".*\\d.*")) {
                     return input.trim();
                 }
                 System.out.println("Invalid input. This value cannot be empty. Please try again.");

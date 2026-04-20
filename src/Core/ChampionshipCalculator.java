@@ -1,4 +1,5 @@
 package Core;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -26,10 +27,24 @@ public class ChampionshipCalculator {
             return standings;
         }
 
+        int skippedUnlinkedRaces = 0;
+
+
         for (Race race : results) {
             Driver driver = race.getDriver();
-            String driverName = (driver != null) ? driver.getDriverName() : "Unknown";
+
+            if (driver == null) {
+                skippedUnlinkedRaces++;
+                continue;
+            }
+
+            String driverName = driver.getDriverName();
             standings.put(driverName, standings.getOrDefault(driverName, 0) + race.getResult());
+        }
+
+        if (standings.isEmpty()) {
+            System.out.println("No results on record.");
+            return standings;
         }
 
         System.out.println("\nChampionship Standings:");
@@ -38,6 +53,10 @@ public class ChampionshipCalculator {
                 .stream()
                 .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
                 .forEach(entry -> System.out.println(entry.getKey() + " - " + entry.getValue() + " pts"));
+
+        if (skippedUnlinkedRaces > 0) {
+            System.out.println("Skipped " + skippedUnlinkedRaces + " unlinked races.");
+        }
         return standings;
     }
 }

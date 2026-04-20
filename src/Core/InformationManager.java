@@ -31,8 +31,9 @@ public class InformationManager {
     
     //Gets all drivers from database, if any
     public ArrayList<Driver> getAllDrivers() {
+        System.out.println("\n--- Drivers on Record ---\n");
         if (drivers.isEmpty()) {
-            System.out.println("\n--- No Drivers on Record ---\n");
+            System.out.println("No Drivers on Record.");
         }
         for (Driver driver : drivers) {
             System.out.println(driver);
@@ -118,8 +119,9 @@ public class InformationManager {
 
     //Gets all races from database, if any
     public ArrayList<Race> getAllRaces() {
+        System.out.println("\n--- Races on Record ---\n");
         if (races.isEmpty()) {
-            System.out.println("\n--- No Races on Record ---\n");
+            System.out.println("No Races on Record.");
         }
         for (Race race : races) {
             System.out.println(race);
