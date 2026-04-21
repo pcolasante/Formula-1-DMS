@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Formula 1 DMS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Formula_1_DMS_jar</output-path>
+    <root id="archive" name="Formula 1 DMS.jar">
+      <element id="module-output" name="Formula 1 DMS" />
+    </root>
+  </artifact>
+</component>
