@@ -149,7 +149,6 @@ public class MenuSystem {
                 System.out.println("4. Delete Race");
                 System.out.println("5. Load Race from file");
                 System.out.println("6. Return to Main Menu");
-                System.out.print("Select an option: ");
                 choice = readMenuChoice(scanner, "Select an option: ");
 
                 switch (choice) {
