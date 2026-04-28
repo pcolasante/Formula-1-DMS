@@ -8,14 +8,18 @@ package Core;
 
  */
 public class DataValidation {
+
+    //Method to state if string is valid. Should accept a String that is not empty.
     public boolean isValidString(String value) {
         return value != null && !value.trim().isEmpty();
     }
 
+    //Method to state if an Integer is valid. Should accept an Int is positive.
     public boolean isValidPositiveInt(int value) {
         return value >= 0;
     }
 
+    //Method to return the Integers from Strings
     public Integer parseInt(String value) {
 
         try {

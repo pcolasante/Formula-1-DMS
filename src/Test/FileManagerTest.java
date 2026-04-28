@@ -1,0 +1,71 @@
+package Test;
+import Core.*;
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+
+class FileManagerTest {
+    private FileManager fileManager;
+
+
+    @BeforeEach
+    void setUp() {
+        fileManager = new FileManager();
+    }
+
+    @Test
+    void testLoadFromFile() throws Exception {
+
+        InformationManager source = new InformationManager();
+
+        source.addDriver(new Driver(1, "Lando Norris", 1, "UK", "McLaren", 24, 18, 8, 423, true));
+
+        Path tempFile = Files.createTempFile("test", ".txt");
+
+        try {
+            assertTrue(fileManager.saveToFile(tempFile.toString(), source));
+
+            InformationManager target = new InformationManager();
+
+            assertTrue(fileManager.loadFromFile(tempFile.toString(), target));
+
+            Driver loaded = target.getDriverById(1);
+            assertNotNull(loaded);
+            assertEquals("Lando Norris", loaded.getDriverName());
+            assertEquals("McLaren", loaded.getTeam());
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+    }
+
+    @Test
+    void testSaveToFile() throws Exception {
+
+        InformationManager source = new InformationManager();
+        Driver driver = new Driver(1, "Lando Norris", 1, "UK", "McLaren", 24, 18, 8, 423, true);
+        source.addDriver(driver);
+        source.addRace(new Race(1, driver, "LOUIS VUITTON AUSTRALIAN GRAND PRIX 2025", "Albert Park Grand Prix Circuit, Melbourne", "Australia", "16 MAR 2025", 58, 1, 25));
+
+        Path tempFile = Files.createTempFile("test", ".txt");
+
+        try {
+            assertTrue(fileManager.saveToFile(tempFile.toString(), source));
+
+            List<String> lines = Files.readAllLines(tempFile);
+            assertEquals(2, lines.size());
+            assertTrue(lines.get(0).startsWith("DRIVER|"));
+            assertTrue(lines.get(1).startsWith("RACE|"));
+            assertTrue(lines.get(1).contains("|1|"));
+        } finally {
+            Files.deleteIfExists(tempFile);
+        }
+
+
+    }
+}
