@@ -14,11 +14,13 @@ class FileManagerTest {
     private FileManager fileManager;
 
 
+    //Sets up the File Manager for the tests
     @BeforeEach
     void setUp() {
         fileManager = new FileManager();
     }
 
+    //Will test the LoadFromFile method, should pass if program is able to open and load a file.
     @Test
     void testLoadFromFile() throws Exception {
 
@@ -44,6 +46,7 @@ class FileManagerTest {
         }
     }
 
+    //Test to save a file to a text file, should pass if information is saved to file.
     @Test
     void testSaveToFile() throws Exception {
 
