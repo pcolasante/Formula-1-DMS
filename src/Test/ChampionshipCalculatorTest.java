@@ -2,8 +2,6 @@ package Test;
 
 import Core.*;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Collections;
 import java.util.Map;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +15,7 @@ class ChampionshipCalculatorTest {
     private Race testRace2;
     private Race testRace3;
 
+    //Setting up for the tests
     @BeforeEach
     void setUp() {
 
@@ -28,6 +27,7 @@ class ChampionshipCalculatorTest {
 
     }
 
+    //Test to calculate standings, should pass if method is able to calculate the total of totalPoints
     @Test
     void testCalculateStandings() {
 
