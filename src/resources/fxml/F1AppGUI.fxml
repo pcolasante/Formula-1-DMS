@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="UI.MainController">
-
-    <children>
-        <Button text="Click Me"
-                layoutX="100"
-                layoutY="100"
-                onAction="#handleClick"/>
-    </children>
-
-</AnchorPane>
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.MainController">
+   <top>
+        <TabPane fx:id="mainTabPane" BorderPane.alignment="CENTER">
+        <tabs>
+            <Tab fx:id="driversTab" closable="false" text="Drivers">
+                <content>
+                    <BorderPane fx:id="driversContentRoot">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets></BorderPane>
+                </content>
+            </Tab>
+            <Tab fx:id="racesTab" closable="false" text="Races">
+                <content>
+                    <BorderPane fx:id="racesContentRoot" />
+                </content>
+            </Tab>
+            <Tab fx:id="standingsTab" closable="false" text="Standings">
+                <content>
+                    <BorderPane fx:id="standingsContentRoot" />
+                </content>
+            </Tab>
+            <Tab fx:id="fileTab" closable="false" text="File">
+                <content>
+                    <BorderPane fx:id="fileContentRoot" prefHeight="254.0" prefWidth="320.0" />
+                </content>
+            </Tab>
+        </tabs>
+        </TabPane>
+   </top>
+</BorderPane>

@@ -1,0 +1,44 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, #313233 0.0%, #000000 100.0%);
+}
+
+.label {
+    -fx-text-fill: #f4f7fb;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #0b1117;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #adafb1;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #ea0505;
+}
+
+.button {
+    -fx-background-color: #ea0505;
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+}
+
+.text-field, .list-view, .table-view {
+    -fx-background-color: #494a4a;
+}
+
+.dialog-pane.app-alert {
+    -fx-background-color: #676767;
+}
+
+.dialog-pane.app-alert .content.label {
+    -fx-text-fill: #f4f7fb;
+    -fx-font-size: 13px;
+}
+
+.dialog-pane.app-alert .button {
+    -fx-background-color: #ea0505;
+    -fx-text-fill: white;
+}
