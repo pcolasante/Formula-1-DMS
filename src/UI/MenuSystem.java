@@ -1,14 +1,14 @@
+package UI;
+
 import Core.*;
 
-import java.util.Objects;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /*Author: Paulina Flores Colasante
  Course: Software Development 1
  Date: 3/8/2026
 
- Class MenuSystem: This class is the main menu system for the console-based application. It will display the main menu and submenus for Drivers, Races, and Championship Standings. 
+ Class UI.MenuSystem: This class is the main menu system for the console-based application. It will display the main menu and submenus for Drivers, Races, and Championship Standings.
  It will also handle user input and call the appropriate methods from the InformationManager, FileManager, DataValidation, and ChampionshipCalculator classes.   
 
  */
@@ -21,7 +21,7 @@ public class MenuSystem {
     private final ChampionshipCalculator championshipCalculator;
     private String autoSaveFileName;
 
-    // Constructor for MenuSystem, initializes all components with the provided instances, ensuring separation of concerns and modularity
+    // Constructor for UI.MenuSystem, initializes all components with the provided instances, ensuring separation of concerns and modularity
     public MenuSystem(InformationManager informationManager, FileManager fileManager,
                       DataValidation validator, ChampionshipCalculator championshipCalculator) {
 

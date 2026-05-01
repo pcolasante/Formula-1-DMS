@@ -1,10 +1,11 @@
+package UI;
+
 import Core.ChampionshipCalculator;
 import Core.DataValidation;
 import Core.FileManager;
 import Core.InformationManager;
 
 
-import java.awt.*;
 import java.util.Objects;
 
 /*Author: Paulina Flores Colasante
@@ -17,7 +18,7 @@ import java.util.Objects;
  The user will be asked to input driver or race details to either add/remove.
  The program will return the driver list, and a confirmation.
 
- Class: F1App (Main class): Will launch the main console-based application.
+ Class: UI.F1App (Main class): Will launch the main console-based application.
 
  */
 public class F1App {
@@ -37,7 +38,7 @@ public class F1App {
     }
 
     // Constructor for dependency injection, allows easier testing and flexibility
-        public F1App(DataValidation validator,
+    public F1App(DataValidation validator,
                  FileManager fileManager,
                  InformationManager manager,
                  ChampionshipCalculator calculator) {
@@ -66,8 +67,11 @@ public class F1App {
 
     // Main method to launch the application
     public static void main(String[] args) {
-        new F1App().run();
+        if (args != null && args.length > 0 && "--cli".equalsIgnoreCase(args[0])) {
+            new F1App().run();
+            return;
+        }
 
+        F1AppGUI.main(args);
     }
-
 }
