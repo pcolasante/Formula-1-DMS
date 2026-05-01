@@ -7,6 +7,7 @@ import javafx.scene.control.TabPane;
 
 import javafx.fxml.FXML;
 import Core.*;
+import javafx.event.ActionEvent;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,16 +28,19 @@ import java.util.Map;
 
 public class MainController {
 
-    @FXML
-    private TabPane mainTabPane;
-    @FXML
-    private BorderPane driversContentRoot;
-    @FXML
-    private BorderPane racesContentRoot;
-    @FXML
-    private BorderPane standingsContentRoot;
-    @FXML
-    private BorderPane fileContentRoot;
+    @FXML private TabPane mainTabPane;
+    @FXML private BorderPane driversContentRoot;
+    @FXML private BorderPane racesContentRoot;
+    @FXML private BorderPane standingsContentRoot;
+    @FXML private BorderPane fileContentRoot;
+    @FXML private TableView<Driver> driverTable;
+    @FXML private TextField driverIdField;
+    @FXML private TextField driverNameField;
+    @FXML private TextField driverCarField;
+    @FXML private TableView<Race> racesTable;
+    @FXML private TextField raceIdField;
+
+
     @FXML
     private void initialize() {
         try {
@@ -70,11 +74,13 @@ public class MainController {
     private final ObservableList<String> standingsRows = FXCollections.observableArrayList();
     private String dataFileName = defaultDataFileName;
 
+
+    @FXML
     private BorderPane buildDriversPane() {
 
-        TableView<Driver> tableView = new TableView<>(driverRows);
+        TableView<Driver> tableViewDriver = new TableView<>(driverRows);
 
-        tableView.getColumns().addAll(
+        tableViewDriver.getColumns().addAll(
                 driverNumberCol("ID", Driver::getDriverId),
                 driverStringCol("Name", Driver::getDriverName),
                 driverNumberCol("Car Number", Driver::getCarNumber),
@@ -90,7 +96,7 @@ public class MainController {
 
         );
 
-        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        tableViewDriver.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         TextField id = new TextField();
         TextField name = new TextField();
@@ -155,12 +161,13 @@ public class MainController {
             clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
+        //Clear button for Driver Tab
         Button clear = new Button("Clear");
         clear.setOnAction(e -> clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active));
 
         Button loadSelected = new Button("Load selected");
         loadSelected.setOnAction(e -> {
-            Driver selected = tableView.getSelectionModel().getSelectedItem();
+            Driver selected = tableViewDriver.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 showAlert(Alert.AlertType.INFORMATION, "No selection", "Select a driver row first.");
                 return;
@@ -170,7 +177,7 @@ public class MainController {
 
         Button deleteSelected = new Button("Delete selected");
         deleteSelected.setOnAction(e -> {
-            Driver selected = tableView.getSelectionModel().getSelectedItem();
+            Driver selected = tableViewDriver.getSelectionModel().getSelectedItem();
             if (selected == null) {
                 showAlert(Alert.AlertType.INFORMATION, "No selection", "Select a driver row first.");
                 return;
@@ -187,7 +194,7 @@ public class MainController {
         left.setPadding(new Insets(10));
 
         BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(tableView);
+        borderPane.setCenter(tableViewDriver);
         borderPane.setLeft(left);
         return borderPane;
 

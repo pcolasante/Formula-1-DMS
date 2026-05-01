@@ -1,10 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+
 .root {
-    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: "Titillium Web", sans-serif;
+    -fx-font-style: normal;
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
     -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, #313233 0.0%, #000000 100.0%);
 }
 
 .label {
-    -fx-text-fill: #f4f7fb;
+    -fx-text-fill: #abacae;
 }
 
 .tab-pane .tab-header-area .tab-header-background {
@@ -13,20 +19,26 @@
 
 .tab-pane .tab {
     -fx-background-color: #adafb1;
+    -fx-font-weight: bold;
 }
 
 .tab-pane .tab:selected {
     -fx-background-color: #ea0505;
+    -fx-font-weight: bolder;
 }
 
 .button {
     -fx-background-color: #ea0505;
     -fx-text-fill: white;
-    -fx-font-weight: 600;
+    -fx-font-weight: bold;
+    -fx-font-weight: 800;
 }
 
 .text-field, .list-view, .table-view {
     -fx-background-color: #494a4a;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-weight: 800;
 }
 
 .dialog-pane.app-alert {

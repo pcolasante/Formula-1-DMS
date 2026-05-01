@@ -11,9 +11,11 @@
             <Tab fx:id="driversTab" closable="false" text="Drivers">
                 <content>
                     <BorderPane fx:id="driversContentRoot">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets></BorderPane>
+                        <GridPane hgap="8.0" vgap="8.0">
+                            <Label text="Driver ID: " GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="driverIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        </GridPane>
+                    </BorderPane>
                 </content>
             </Tab>
             <Tab fx:id="racesTab" closable="false" text="Races">
