@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class MainController {
 
+    //Declaring controllers for FXML and CSS actions
     @FXML private TabPane mainTabPane;
     @FXML private BorderPane driversContentRoot;
     @FXML private BorderPane racesContentRoot;
@@ -40,7 +41,7 @@ public class MainController {
     @FXML private TableView<Race> racesTable;
     @FXML private TextField raceIdField;
 
-
+    //Method to initialize the app with the current design, pulls FXML tabs and wires them correctly, other wise fails
     @FXML
     private void initialize() {
         try {
@@ -64,6 +65,7 @@ public class MainController {
         }
     }
 
+
     private final InformationManager informationManager = new InformationManager();
     private final FileManager fileManager = new FileManager();
     private final ChampionshipCalculator championshipCalculator = new ChampionshipCalculator();
@@ -74,7 +76,7 @@ public class MainController {
     private final ObservableList<String> standingsRows = FXCollections.observableArrayList();
     private String dataFileName = defaultDataFileName;
 
-
+    //Method to build Driver tab on DMS, user should be able to see all drivers, add, update, delete, select to update or delete, and clear fields
     @FXML
     private BorderPane buildDriversPane() {
 
@@ -165,6 +167,7 @@ public class MainController {
         Button clear = new Button("Clear");
         clear.setOnAction(e -> clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active));
 
+        //Button to load selected
         Button loadSelected = new Button("Load selected");
         loadSelected.setOnAction(e -> {
             Driver selected = tableViewDriver.getSelectionModel().getSelectedItem();
@@ -175,6 +178,7 @@ public class MainController {
             populateDriverFields(selected, id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
+        //Button to delete selected
         Button deleteSelected = new Button("Delete selected");
         deleteSelected.setOnAction(e -> {
             Driver selected = tableViewDriver.getSelectionModel().getSelectedItem();
@@ -200,6 +204,7 @@ public class MainController {
 
     }
 
+    //Method to build Race tab on DMS, user should be able to see all races, add, update, delete, select to update or delete, and clear fields
     private BorderPane buildRacesPane() {
         TableView<Race> tableView = new TableView<>(raceRows);
         tableView.getColumns().addAll(raceNumberCol("Race ID", Race::getRaceId),
@@ -302,7 +307,7 @@ public class MainController {
             clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results);
         });
 
-        //Clear
+        //Button to clear fields
         Button clear = new Button("Clear");
         clear.setOnAction(e -> clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results));
 
@@ -316,6 +321,7 @@ public class MainController {
         return borderPane;
     }
 
+    //Method that builds Standings tab on DMS, user is able to see calculated standings after calculation
     private VBox buildStandingsPane() {
         ListView<String> standingsView = new ListView<>(standingsRows);
         Button calculate = new Button("Calculate Standings");
@@ -323,12 +329,14 @@ public class MainController {
         return new VBox(10, calculate, standingsView);
     }
 
+    //Method that builds File tab on the DMS, user is able to browse, type, load, and save from/to file
     private VBox buildFilePane() {
         Label fileLabel = new Label("Current File: " + dataFileName);
 
         TextField fileName = new TextField(dataFileName);
         fileName.setPromptText("Enter file name or Browse");
 
+        //Button to browse file
         Button browse = new Button("Browse");
         browse.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
@@ -342,6 +350,7 @@ public class MainController {
             }
         });
 
+        //Button to add file name
         Button useTyped = new Button("Type file name");
         useTyped.setOnAction(e -> {
             String typed = fileName.getText() == null ? "" : fileName.getText().trim();
@@ -349,6 +358,7 @@ public class MainController {
             fileLabel.setText("Current File: " + dataFileName);
         });
 
+        //Button to load from file
         Button load = new Button("Load from file");
         load.setOnAction(e -> {
             String typed = fileName.getText() == null ? "" : fileName.getText().trim();
@@ -361,6 +371,7 @@ public class MainController {
             refreshAll();
         });
 
+        //Button to save file
         Button save = new Button("Save");
         save.setOnAction(e -> {
             String typed = fileName.getText() == null ? "" : fileName.getText().trim();
@@ -375,6 +386,7 @@ public class MainController {
         return new VBox(10, fileLabel, fileName, new HBox(8, browse, useTyped), new HBox(8, load, save));
     }
 
+    //Builds driver from the input given by the user, should return driver added to the file
     private Driver buildDriver(TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         Integer driverId = validator.parseInt(id.getText().trim());
         Integer carNumber = validator.parseInt(car.getText().trim());
@@ -401,6 +413,7 @@ public class MainController {
 
     }
 
+    //Builds a race from the input given by the user, should return the race added to the file
     private Race buildRace(TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         Integer raceIdField = validator.parseInt(raceId.getText().trim());
         String driverText = driverIdField.getText() == null ? "" : driverIdField.getText().trim();
@@ -434,6 +447,7 @@ public class MainController {
         return new Race(raceIdField, driver, raceName.getText().trim(), location.getText().trim(), country.getText().trim(), date.getText().trim(), lapsCount, positionNumber, resultNumber);
     }
 
+    //Populates Drivers fields when selecting a driver from the file
     private void populateDriverFields(Driver driver, TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         id.setText(String.valueOf(driver.getDriverId()));
         name.setText(driver.getDriverName());
@@ -448,6 +462,7 @@ public class MainController {
 
     }
 
+    //Populates races fields when selecting a race from the file
     private void populateRaceFields(Race race, TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         raceId.setText(String.valueOf(race.getRaceId()));
         driverIdField.setText(race.getDriver() == null ? "" : String.valueOf(race.getDriver().getDriverId()));
@@ -461,6 +476,7 @@ public class MainController {
 
     }
 
+    //Method to clear driver fields after any action made, updating, adding, or deleting
     private void clearDriverFields(TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         id.clear();
         name.clear();
@@ -473,6 +489,8 @@ public class MainController {
         totalPoints.setText("0");
         if (active != null) active.setSelected(true);
     }
+
+    //Method to clear race fields after any action made, updating, adding, or deleting
     private void clearRaceFields(TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         raceId.clear();
         driverIdField.clear();
@@ -485,20 +503,24 @@ public class MainController {
         result.clear();
     }
 
+    //Method to refresh drivers, should return drivers all updated
     private void refreshDrivers() {
         driverRows.setAll(informationManager.getDriversData());
     }
 
+    //Method to refresh races, should return races all updated
     private void refreshRaces() {
         raceRows.setAll(informationManager.getRacesData());
     }
 
+    //Method to refresh standings, should return changed standings
     private void refreshStandings() {
 
         Map<String, Integer> standings = championshipCalculator.calculateStandings(informationManager.getRacesData());
         standingsRows.setAll(standings.entrySet().stream().sorted(Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()).map(e -> e.getKey() + " - " + e.getValue() + " pts").toList());
     }
 
+    //Method to update drivers, races, standings, after any action
     private void refreshAll() {
         refreshDrivers();
         refreshRaces();
@@ -506,17 +528,20 @@ public class MainController {
 
     }
 
+    //Method that refreshes and updates the table after an action
     private void refreshTable() {
 
         driverRows.setAll(informationManager.getDriversData());
 
     }
 
+    //Method to load any existing data from the persistent file
     private void loadExistingData() {
 
         fileManager.loadFromFile(dataFileName, informationManager);
     }
 
+    //Method that forms the grid for the database
     private GridPane formGrid() {
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -524,30 +549,35 @@ public class MainController {
         return grid;
     }
 
+    //Method to build Driver Number column items, should return a number
     private TableColumn<Driver, Number> driverNumberCol(String name, java.util.function.ToIntFunction<Driver> getter) {
         TableColumn<Driver, Number> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleIntegerProperty(getter.applyAsInt(data.getValue())));
         return col;
     }
 
+    //Method to build Driver String column items. should return a string
     private TableColumn<Driver, String> driverStringCol(String name, java.util.function.Function<Driver, String> getter) {
         TableColumn<Driver, String> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleStringProperty(getter.apply(data.getValue())));
         return col;
     }
 
+    //Method to build Race Number column items, should return a number
     private TableColumn<Race, Number> raceNumberCol(String name, java.util.function.ToIntFunction<Race> getter) {
         TableColumn<Race, Number> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleIntegerProperty(getter.applyAsInt(data.getValue())));
         return col;
     }
 
+    //Method to build Race String column items, should return a Strin
     private TableColumn<Race, String> raceStringCol(String name, java.util.function.Function<Race, String> getter) {
         TableColumn<Race, String> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleStringProperty(getter.apply(data.getValue())));
         return col;
     }
 
+    //Method to show alert box during any wrong input event, should return the message alert
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
