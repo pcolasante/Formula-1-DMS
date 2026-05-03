@@ -1,17 +1,16 @@
 package Core;
 
-/*Author: Paulina Flores Colasante
- Course: Software Development 1
- Date: 3/8/2026
-
- Class: Core.Race: All information from the race is held here.
- It will obtain and return the race name, location, country, date, attendance, total laps, and result.
-
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 3/8/2026
+ * Class: Race: All information from the race is held here.
+ * It will obtain and return the race name, location, country, date, attendance, total laps, and result.
  */
 public class Race {
 
-    private int raceId;
-    private Driver driver;
+    private final int raceId;
+    private final Driver driver;
     String raceName;
     String location;
     String country;
@@ -20,9 +19,20 @@ public class Race {
     int totalLaps;
     int result;
 
-    //Map<String, Integer> results;
 
-    // Constructor for Race, initializes all fields with the provided values, ensuring that each driver has a unique ID and complete information
+    /**
+     * Constructor for Race, initializes all fields with the provided values, ensuring that each driver has a unique ID and complete information
+     *
+     * @param raceId
+     * @param driver
+     * @param raceName
+     * @param location
+     * @param country
+     * @param date
+     * @param totalLaps
+     * @param position
+     * @param result
+     */
     public Race(int raceId, Driver driver, String raceName, String location, String country, String date, int totalLaps, int position, int result) {
         this.raceId = raceId;
         this.driver = driver;
@@ -35,66 +45,110 @@ public class Race {
         this.result = result;
     }
 
-    // Method to get the race ID, returns the unique identifier for the race
+    /**
+     * getRaceId: Method to get the race ID, returns the unique identifier for the race
+     *
+     * @return int
+     */
     public int getRaceId() {
 
         return raceId;
     }
 
-    // Method to get the driver associated with the race, returns the driver object
+    /**
+     * getDriver: Method to get the driver associated with the race, returns the driver object
+     *
+     * @return driver
+     */
     public Driver getDriver() {
         return driver;
     }
 
-    // Method to get the race name, returns the name of the race
+    /**
+     * getRaceName: Method to get the race name, returns the name of the race
+     *
+     * @return string
+     */
     public String getRaceName() {
         return raceName;
     }
 
-    // Method to get the location of the race, returns the location
+    /**
+     * getLocation: Method to get the location of the race, returns the location
+     *
+     * @return string
+     */
     public String getLocation() {
         return location;
     }
 
-    // Method to get the country where the race took place, returns the country
+    /**
+     * getCountry: Method to get the country where the race took place, returns the country
+     *
+     * @return String
+     */
     public String getCountry() {
         return country;
     }
 
-    // Method to get the date of the race, returns the date
+    /**
+     * getData: Method to get the date of the race, returns the date
+     *
+     * @return String
+     */
     public String getDate() {
         return date;
     }
 
-    // Method to get the position of the driver in the race, returns the position
+    /**
+     * getPosition: Method to get the position of the driver in the race, returns the position
+     *
+     * @return int
+     */
     public int getPosition() {
         return position;
     }
 
-    // Method to get the total laps in the race, returns the total laps
+    /**
+     * getTotalLapsMethod to get the total laps in the race, returns the total laps
+     *
+     * @return int
+     */
     public int getTotalLaps() {
         return totalLaps;
     }
 
-    // Method to get the result of the race, returns the result (e.g., points earned based on position)
+    /**
+     * getResult: Method to get the result of the race, returns the result (e.g., points earned based on position)
+     *
+     * @return int
+     */
     public int getResult() {
         return result;
     }
 
-    // Method to format race information for file storage, ensuring consistent and readable output
+    /**
+     * toFileString: Method to format race information for file storage, ensuring consistent and readable output
+     *
+     * @return String
+     */
     public String toFileString() {
         return raceId + " | " + raceName + " | " + location + " | " + country + " | Date: " + date + " | Total Laps: " + totalLaps + " | Position: " + position + " | Result: " + result + " | Driver: " + ((driver != null) ? driver.getDriverName() + " (#" + driver.getDriverId() + ")" : "Unknown Driver");
     }
 
-    // Override toString method for better readability when printing race information
-       @Override
+    /**
+     * Override toString method for better readability when printing race information
+     *
+     * @return raceId
+     */
+    @Override
     public String toString() {
         String driverLabel = (driver != null) ? driver.getDriverName() + " (#" + driver.getDriverId() + ")" : "Unknown Driver";
         return raceId +
-                " |  " + raceName + 
-                " |  " + location + 
-                " |  " + country + 
-                " | Date: " + date + 
+                " |  " + raceName +
+                " |  " + location +
+                " |  " + country +
+                " | Date: " + date +
                 " | Total Laps: " + totalLaps +
                 " | Position: " + position +
                 " | Result: " + result +

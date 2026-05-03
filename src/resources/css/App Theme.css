@@ -1,6 +1,12 @@
+/*Author: Paulina Flores Colasante
+CEN 3024 - Software Development 1
+Date: 3/8/2026
+App Theme.css: This class will set the design and style of the GUIApp, such as the background, and text styling
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
 
-
+/* .root: Sets the background, and font of the GUI as a whole*/
 .root {
     -fx-font-family: "Titillium Web", sans-serif;
     -fx-font-style: normal;
@@ -9,24 +15,29 @@
     -fx-background-color: linear-gradient(from 0.0% 0.0% to 0.0% 100.0%, #313233 0.0%, #000000 100.0%);
 }
 
+/* .label: Sets the text color font of the labels*/
 .label {
     -fx-text-fill: #abacae;
 }
 
+/* .tab-pane .tab-header-area .tab-header-background: sets the background color*/
 .tab-pane .tab-header-area .tab-header-background {
     -fx-background-color: #0b1117;
 }
 
+/* .tab-pane .tab: sets the background color, font weight */
 .tab-pane .tab {
     -fx-background-color: #adafb1;
     -fx-font-weight: bold;
 }
 
+/* .tab-pane .tab:selected: sets background color, font weight */
 .tab-pane .tab:selected {
     -fx-background-color: #ea0505;
     -fx-font-weight: bolder;
 }
 
+/* .button: sets background color, font settings*/
 .button {
     -fx-background-color: #ea0505;
     -fx-text-fill: white;
@@ -34,6 +45,7 @@
     -fx-font-weight: 800;
 }
 
+/* .text-field, .list-view, .table-view: background color, text settings*/
 .text-field, .list-view, .table-view {
     -fx-background-color: #494a4a;
     -fx-text-fill: white;
@@ -41,15 +53,18 @@
     -fx-font-weight: 800;
 }
 
+/* .dialog-pane.app-alert: background color*/
 .dialog-pane.app-alert {
     -fx-background-color: #676767;
 }
 
+/* .dialog-pane.app-alert .content.label: text settings */
 .dialog-pane.app-alert .content.label {
     -fx-text-fill: #f4f7fb;
     -fx-font-size: 13px;
 }
 
+/*.dialog-pane.app-alert .button: background color, text settings*/
 .dialog-pane.app-alert .button {
     -fx-background-color: #ea0505;
     -fx-text-fill: white;

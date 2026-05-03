@@ -11,40 +11,39 @@
 
 package UI;
 
-import Core.*;
-import javafx.fxml.FXMLLoader;
 import javafx.application.Application;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map;
 
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 4/8/2026
+ * <p>
+ * Class F1AppGUI: This class will launch the F1App GUI, including all the FXML, CSS, Script settings
+ */
 
-//Method that initiates the F1AppGUI, to start the main private final methods
+/**
+ * F1AppGUI: Method that initiates the F1AppGUI, to start the main private final methods
+ */
 public class F1AppGUI extends Application {
 
-    //Launches the GUI
+
+    /**
+     * main: Launches the GUI
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
-    //Method to start the GUI and all its fxml settings.
+    /**
+     * start: Method to start the GUI and all its fxml settings.
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         FXMLLoader loader = new FXMLLoader();

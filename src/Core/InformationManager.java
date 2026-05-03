@@ -1,18 +1,12 @@
 package Core;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Objects;
-import java.util.InputMismatchException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
-/*Author: Paulina Flores Colasante
- Course: Software Development 1
- Date: 3/8/2026
-
- Class InformationManager: This class will process any additions or removals to the Driver and Race lists.
-
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 3/8/2026
+ * Class InformationManager: This class will process any additions or removals to the Driver and Race lists.
  */
 
 
@@ -27,9 +21,14 @@ public class InformationManager {
         races = new ArrayList<>();
     }
 
-/* ------------------------------------------------------------- DRIVERS ----------------------------------------------------------------- */
-    
-    //Gets all drivers from database, if any
+    /* ------------------------------------------------------------- DRIVERS ----------------------------------------------------------------- */
+
+
+    /**
+     * getAllDrivers: Method. Gets all drivers from database, if any, returns drivers
+     *
+     * @return drivers
+     */
     public ArrayList<Driver> getAllDrivers() {
         System.out.println("\n--- Drivers on Record ---\n");
         if (drivers.isEmpty()) {
@@ -41,12 +40,23 @@ public class InformationManager {
         return drivers;
     }
 
-    //Get Driver Data
+
+    /**
+     * getDriversData: Method. Get Driver Data, returns array list of drivers
+     *
+     * @return ArrayList
+     */
     public ArrayList<Driver> getDriversData() {
         return new ArrayList<>(drivers);
     }
 
-    //Get Driver by ID
+
+    /**
+     * getDriverById: Gets driver data by Id, returns driver or null
+     *
+     * @param driverId
+     * @return driver
+     */
     public Driver getDriverById(int driverId) {
         for (Driver driver : drivers) {
             if (driver.getDriverId() == driverId) {
@@ -56,17 +66,30 @@ public class InformationManager {
         return null;
     }
 
-    //Adds Driver to database
+
+    /**
+     * addDriver: Method. Adds Driver to database, returns boolean
+     *
+     * @param driver
+     * @return boolean
+     */
     public boolean addDriver(Driver driver) {
-        if(driverExists(driver.getDriverId())) {
+        if (driverExists(driver.getDriverId())) {
             return false;
         }
         drivers.add(driver);
         return true;
     }
 
-    //Updates driver in database
-    public boolean  updateDriver(int index, Driver updatedDriver) {
+
+    /**
+     * updateDriver: Method. Updates driver in database, returns boolean
+     *
+     * @param index
+     * @param updatedDriver
+     * @return boolean
+     */
+    public boolean updateDriver(int index, Driver updatedDriver) {
         if (index >= 0 && index < drivers.size()) {
             drivers.set(index, updatedDriver);
             return true;
@@ -74,18 +97,31 @@ public class InformationManager {
         return false;
     }
 
-    //Updates driver in database by ID
-    public boolean updateDriverById(int driverId, Driver updatedDriver) {
-    for (int i = 0; i < drivers.size(); i++) {
-        if (drivers.get(i).getDriverId() == driverId) {
-            drivers.set(i, updatedDriver);
-            return true;
-        }
-    }
-    return false;
-}
 
-    //Removes driver from database
+    /**
+     * updateDriverById: Method. Updates driver in database by ID, returns boolean
+     *
+     * @param driverId
+     * @param updatedDriver
+     * @return boolean
+     */
+    public boolean updateDriverById(int driverId, Driver updatedDriver) {
+        for (int i = 0; i < drivers.size(); i++) {
+            if (drivers.get(i).getDriverId() == driverId) {
+                drivers.set(i, updatedDriver);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * removeDriver: Method. Removes driver from database, returns boolean
+     *
+     * @param driverId
+     * @return boolean
+     */
     public boolean removeDriver(int driverId) {
         for (int i = 0; i < drivers.size(); i++) {
             if (drivers.get(i).getDriverId() == driverId) {
@@ -96,28 +132,40 @@ public class InformationManager {
         return false;
     }
 
-    //Checks if driver exists in database
-    public boolean driverExists(int driverId){
-        for(Driver driver : drivers){
-            if(driver.getDriverId() == driverId){
+    /**
+     * driverExists: Method. Checks if driver exists in database, returns boolean
+     *
+     * @param driverId
+     * @return boolean
+     */
+    public boolean driverExists(int driverId) {
+        for (Driver driver : drivers) {
+            if (driver.getDriverId() == driverId) {
                 return true;
             }
         }
         return false;
     }
 
-    //Loads Drivers from text file
+    /**
+     * loadDrivers: Method. Loads Drivers from text file, returns drivers
+     *
+     * @param loadedDrivers
+     * @return drivers
+     */
     public ArrayList<Driver> loadDrivers(ArrayList<Driver> loadedDrivers) {
         drivers = loadedDrivers;
         return drivers;
     }
 
 
+    /* ------------------------------------------------------------------ RACES ----------------------------------------------------------------------- */
 
-
-/* ------------------------------------------------------------------ RACES ----------------------------------------------------------------------- */
-
-    //Gets all races from database, if any
+    /**
+     * getAllRaces: Method. Gets all races from database, if any. Returns races
+     *
+     * @return ArrayList
+     */
     public ArrayList<Race> getAllRaces() {
         System.out.println("\n--- Races on Record ---\n");
         if (races.isEmpty()) {
@@ -129,22 +177,37 @@ public class InformationManager {
         return races;
     }
 
-    //Get Race Data
+    /**
+     * getRacesData: Method. Get Race Data, returns ArrayList of races
+     *
+     * @return ArrayList
+     */
     public ArrayList<Race> getRacesData() {
         return new ArrayList<>(races);
     }
 
-    //Adds race to database
-    public  boolean addRace(Race race) {
-        if(raceExists(race.getRaceId())) {
+    /**
+     * addRace: Method. Adds race to database, returns boolean
+     *
+     * @param race
+     * @return boolean
+     */
+    public boolean addRace(Race race) {
+        if (raceExists(race.getRaceId())) {
             return false;
         }
         races.add(race);
         return true;
     }
 
-    //Updates race in database
-    public  boolean updateRace(int index, Race updatedRace) {
+    /**
+     * updateRace: Method. Updates race in database, returns boolean.
+     *
+     * @param index
+     * @param updatedRace
+     * @return boolean
+     */
+    public boolean updateRace(int index, Race updatedRace) {
         if (index >= 0 && index < races.size()) {
             races.set(index, updatedRace);
             return true;
@@ -152,21 +215,32 @@ public class InformationManager {
         return false;
     }
 
-    //Updates Race in database by ID
+    /**
+     * updateRaceById: Method. Updates Race in database by ID, returns boolean
+     *
+     * @param raceId
+     * @param updatedRace
+     * @return boolean
+     */
     public boolean updateRaceById(int raceId, Race updatedRace) {
-    for (int i = 0; i < races.size(); i++) {
-        if (races.get(i).getRaceId() == raceId) {
-            races.set(i, updatedRace);
-            return true;
+        for (int i = 0; i < races.size(); i++) {
+            if (races.get(i).getRaceId() == raceId) {
+                races.set(i, updatedRace);
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
     }
 
-    //deletes race from database
-    public  boolean deleteRace(int raceId) {
-        for(Race race : races){
-            if(race.getRaceId() == raceId){
+    /**
+     * deleteRace: Method that deletes race from database, returns boolean
+     *
+     * @param raceId
+     * @return boolean
+     */
+    public boolean deleteRace(int raceId) {
+        for (Race race : races) {
+            if (race.getRaceId() == raceId) {
                 races.remove(race);
                 return true;
             }
@@ -174,17 +248,27 @@ public class InformationManager {
         return false;
     }
 
-    //Checks if race exists in database
+    /**
+     * raceExists: Method Checks if race exists in database, returns boolean
+     *
+     * @param raceId
+     * @return boolean
+     */
     public boolean raceExists(int raceId) {
-        for(Race race : races){
-            if(race.getRaceId() == raceId){
+        for (Race race : races) {
+            if (race.getRaceId() == raceId) {
                 return true;
             }
         }
         return false;
     }
 
-    //Loads the Races from text file
+    /**
+     * loadRaces: Loads the Races from text file, returns ArrayList
+     *
+     * @param loadedRaces
+     * @return ArrayList
+     */
     public ArrayList<Race> loadRaces(ArrayList<Race> loadedRaces) {
         races = loadedRaces;
         return races;

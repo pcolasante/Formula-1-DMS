@@ -1,16 +1,11 @@
 package Core;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Objects;
 
-
-/*Author: Paulina Flores Colasante
- Course: Software Development 1
- Date: 3/8/2026
-
- Class: Driver: All information from the driver is held here.
- It will obtain and return the driver's name, nationality, team, car number, total points won so far, race wins, races entered, podiums, and if active or not.
-
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 3/8/2026
+ * Driver.java: All information from the driver is held here.
+ * It will obtain and return the driver's name, nationality, team, car number, total points won so far, race wins, races entered, podiums, and if active or not.
  */
 public class Driver {
 
@@ -26,7 +21,20 @@ public class Driver {
     boolean activeStatus;
 
 
-    // Constructor for Driver, initializes all fields with the provided values, ensuring that each driver has a unique ID and complete information
+    /**
+     * Driver: initializes all fields with the provided values, ensuring that each driver has a unique ID and complete information
+     *
+     * @param driverId
+     * @param driverName
+     * @param carNumber
+     * @param nationality
+     * @param team
+     * @param raceEntered
+     * @param podiums
+     * @param raceWins
+     * @param totalPoints
+     * @param activeStatus
+     */
     public Driver(int driverId, String driverName, int carNumber, String nationality, String team, int raceEntered, int podiums, int raceWins, int totalPoints, boolean activeStatus) {
         this.driverId = driverId;
         this.driverName = driverName;
@@ -40,63 +48,114 @@ public class Driver {
         this.activeStatus = activeStatus;
     }
 
-    // Method to get the driver's ID, returns the unique identifier for the driver
+    /**
+     * getDriverId: Method to get the driver's ID, returns the unique identifier for the driver
+     *
+     * @return int driverId
+     */
     public int getDriverId() {
         return driverId;
     }
 
-    // Method to get the driver's name, returns the name of the driver
+    /**
+     * getDriverName: Method to get the driver's name, returns the name of the driver
+     *
+     * @return String driverName
+     */
     public String getDriverName() {
         return driverName;
     }
 
-    // Method to get the driver's nationality, returns the nationality
+    /**
+     * getNationality: Method to get the driver's nationality, returns the nationality
+     *
+     * @return String
+     *
+     */
     public String getNationality() {
         return nationality;
     }
 
-    // Method to get the team of the driver, returns the team name
+    /**
+     * Method to get the team of the driver, returns the team name
+     * getTeam:
+     *
+     * @return
+     */
     public String getTeam() {
         return team;
     }
 
-    // Method to get the car number of the driver, returns the car number
+
+    /**
+     * getCarNumber: Method to get the car number of the driver, returns the car number
+     *
+     * @return Int
+     */
     public int getCarNumber() {
         return carNumber;
     }
 
-    // Method to get the total points the driver has accumulated, returns the total points
+    /**
+     * getTotalPoints: Method to get the total points the driver has accumulated, returns the total points
+     *
+     * @return Int
+     */
     public int getTotalPoints() {
         return totalPoints;
     }
 
-    // Method to get the number of races the driver has won, returns the count of race wins
+    /**
+     * getRaceWins: Method to get the number of races the driver has won, returns the count of race wins
+     *
+     * @return Int
+     */
     public int getRaceWins() {
         return raceWins;
     }
 
-    // Method to get the number of races the driver has entered, returns the count of races entered
+    /**
+     * getRaceEntered: Method to get the number of races the driver has entered, returns the count of races entered
+     *
+     * @return Int
+     */
     public int getRaceEntered() {
         return raceEntered;
     }
 
-    // Method to get the number of podiums the driver has achieved, returns the count of podium finishes
+    /**
+     * getPodiums: Method to get the number of podiums the driver has achieved, returns the count of podium finishes
+     *
+     * @return int
+     */
     public int getPodiums() {
         return podiums;
     }
 
-    // Method to check if the driver is currently active, returns true if active, otherwise false
+    /**
+     * isActiveStatus: Method to check if the driver is currently active, returns true if active, otherwise false
+     *
+     * @return boolean
+     */
     public boolean isActiveStatus() {
         return activeStatus;
     }
 
-    // Method to format driver information for file storage, ensuring consistent and readable output
+    /**
+     * toFileString: Method to format driver information for file storage, ensuring consistent and readable output
+     *
+     * @return String
+     */
     public String toFileString() {
         // add String formatting ""
-      return driverId + " | " + driverName + " | " + carNumber + " | " + nationality + " | " + team + " | Races Entered: " + raceEntered + " | Podiums: " + podiums + " | Race Wins: " + raceWins + " | Total Points: " + totalPoints + " | Active Status: " + activeStatus;
+        return driverId + " | " + driverName + " | " + carNumber + " | " + nationality + " | " + team + " | Races Entered: " + raceEntered + " | Podiums: " + podiums + " | Race Wins: " + raceWins + " | Total Points: " + totalPoints + " | Active Status: " + activeStatus;
     }
 
-    // Override toString method for better readability when printing driver information
+    /**
+     * toString: Override toString method for better readability when printing driver information, returns driverId and all its objects
+     *
+     * @return String
+     */
     @Override
     public String toString() {
         return driverId +

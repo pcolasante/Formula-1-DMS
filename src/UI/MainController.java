@@ -1,18 +1,12 @@
 package UI;
 
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-
-import javafx.fxml.FXML;
 import Core.*;
-import javafx.event.ActionEvent;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -26,22 +20,55 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 4/8/2026
+ * <p>
+ * Class MainControllerJava: This class will launch the controllers F1App GUI, including all the FXML, CSS, Script, tables, and other settings. Essentially, it is the logic of the GUI.
+ */
+
+
 public class MainController {
 
-    //Declaring controllers for FXML and CSS actions
-    @FXML private TabPane mainTabPane;
-    @FXML private BorderPane driversContentRoot;
-    @FXML private BorderPane racesContentRoot;
-    @FXML private BorderPane standingsContentRoot;
-    @FXML private BorderPane fileContentRoot;
-    @FXML private TableView<Driver> driverTable;
-    @FXML private TextField driverIdField;
-    @FXML private TextField driverNameField;
-    @FXML private TextField driverCarField;
-    @FXML private TableView<Race> racesTable;
-    @FXML private TextField raceIdField;
+    private final InformationManager informationManager = new InformationManager();
+    private final FileManager fileManager = new FileManager();
+    private final ChampionshipCalculator championshipCalculator = new ChampionshipCalculator();
+    private final DataValidation validator = new DataValidation();
+    private final String defaultDataFileName = "f1-data.db";
+    private final ObservableList<Driver> driverRows = FXCollections.observableArrayList();
+    private final ObservableList<Race> raceRows = FXCollections.observableArrayList();
+    private final ObservableList<String> standingsRows = FXCollections.observableArrayList();
 
-    //Method to initialize the app with the current design, pulls FXML tabs and wires them correctly, other wise fails
+    //Declaring controllers for FXML and CSS actions
+    @FXML
+    private TabPane mainTabPane;
+    @FXML
+    private BorderPane driversContentRoot;
+    @FXML
+    private BorderPane racesContentRoot;
+    @FXML
+    private BorderPane standingsContentRoot;
+    @FXML
+    private BorderPane fileContentRoot;
+    @FXML
+    private TableView<Driver> driverTable;
+    @FXML
+    private TextField driverIdField;
+    @FXML
+    private TextField driverNameField;
+    @FXML
+    private TextField driverCarField;
+    @FXML
+    private TableView<Race> racesTable;
+    @FXML
+    private TextField raceIdField;
+    private String dataFileName = defaultDataFileName;
+
+
+    /**
+     * initialize: Method to initialize the app with the current design, pulls FXML tabs and wires them correctly, other wise fails
+     */
     @FXML
     private void initialize() {
         try {
@@ -66,17 +93,11 @@ public class MainController {
     }
 
 
-    private final InformationManager informationManager = new InformationManager();
-    private final FileManager fileManager = new FileManager();
-    private final ChampionshipCalculator championshipCalculator = new ChampionshipCalculator();
-    private final DataValidation validator = new DataValidation();
-    private final String defaultDataFileName = "f1-data.db";
-    private final ObservableList<Driver> driverRows = FXCollections.observableArrayList();
-    private final ObservableList<Race> raceRows = FXCollections.observableArrayList();
-    private final ObservableList<String> standingsRows = FXCollections.observableArrayList();
-    private String dataFileName = defaultDataFileName;
-
-    //Method to build Driver tab on DMS, user should be able to see all drivers, add, update, delete, select to update or delete, and clear fields
+    /**
+     * buildDriversPane: Method to build Driver tab on DMS, user should be able to see all drivers, add, update, delete, select to update or delete, and clear fields
+     *
+     * @return BordenPane
+     */
     @FXML
     private BorderPane buildDriversPane() {
 
@@ -208,7 +229,12 @@ public class MainController {
 
     }
 
-    //Method to build Race tab on DMS, user should be able to see all races, add, update, delete, select to update or delete, and clear fields
+
+    /**
+     * buildRacesPane: Method to build Race tab on DMS, user should be able to see all races, add, update, delete, select to update or delete, and clear fields
+     *
+     * @return BordenPane
+     */
     private BorderPane buildRacesPane() {
         TableView<Race> tableView = new TableView<>(raceRows);
         tableView.getColumns().addAll(raceNumberCol("Race ID", Race::getRaceId),
@@ -329,7 +355,12 @@ public class MainController {
         return borderPane;
     }
 
-    //Method that builds Standings tab on DMS, user is able to see calculated standings after calculation
+
+    /**
+     * Method that builds Standings tab on DMS, user is able to see calculated standings after calculation
+     *
+     * @return VBox
+     */
     private VBox buildStandingsPane() {
         ListView<String> standingsView = new ListView<>(standingsRows);
         Button calculate = new Button("Calculate Standings");
@@ -337,7 +368,12 @@ public class MainController {
         return new VBox(10, calculate, standingsView);
     }
 
-    //Method that builds File tab on the DMS, user is able to browse, type, load, and save from/to file
+
+    /**
+     * Method that builds File tab on the DMS, user is able to browse, type, load, and save from/to file
+     *
+     * @return
+     */
     private VBox buildFilePane() {
         Label fileLabel = new Label("Current File: " + dataFileName);
 
@@ -399,7 +435,22 @@ public class MainController {
         return new VBox(10, fileLabel, fileName, new HBox(8, browse, useTyped), new HBox(8, load, save));
     }
 
-    //Builds driver from the input given by the user, should return driver added to the file
+
+    /**
+     * buildDriver: Builds driver from the input given by the user, should return driver added to the file
+     *
+     * @param id
+     * @param name
+     * @param car
+     * @param nationality
+     * @param team
+     * @param races
+     * @param podiums
+     * @param wins
+     * @param totalPoints
+     * @param active
+     * @return
+     */
     private Driver buildDriver(TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         Integer driverId = validator.parseInt(id.getText().trim());
         Integer carNumber = validator.parseInt(car.getText().trim());
@@ -426,7 +477,21 @@ public class MainController {
 
     }
 
-    //Builds a race from the input given by the user, should return the race added to the file
+
+    /**
+     * buildRace: Builds a race from the input given by the user, should return the race added to the file
+     *
+     * @param raceId
+     * @param driverIdField
+     * @param raceName
+     * @param location
+     * @param country
+     * @param date
+     * @param laps
+     * @param position
+     * @param result
+     * @return
+     */
     private Race buildRace(TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         Integer raceIdField = validator.parseInt(raceId.getText().trim());
         String driverText = driverIdField.getText() == null ? "" : driverIdField.getText().trim();
@@ -460,7 +525,21 @@ public class MainController {
         return new Race(raceIdField, driver, raceName.getText().trim(), location.getText().trim(), country.getText().trim(), date.getText().trim(), lapsCount, positionNumber, resultNumber);
     }
 
-    //Populates Drivers fields when selecting a driver from the file
+    /**
+     * populateDriverFields: Populates Drivers fields when selecting a driver from the file
+     *
+     * @param driver
+     * @param id
+     * @param name
+     * @param car
+     * @param nationality
+     * @param team
+     * @param races
+     * @param podiums
+     * @param wins
+     * @param totalPoints
+     * @param active
+     */
     private void populateDriverFields(Driver driver, TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         id.setText(String.valueOf(driver.getDriverId()));
         name.setText(driver.getDriverName());
@@ -475,7 +554,20 @@ public class MainController {
 
     }
 
-    //Populates races fields when selecting a race from the file
+    /**
+     * populateRaceFields: Populates races fields when selecting a race from the file
+     *
+     * @param race
+     * @param raceId
+     * @param driverIdField
+     * @param raceName
+     * @param location
+     * @param country
+     * @param date
+     * @param laps
+     * @param position
+     * @param result
+     */
     private void populateRaceFields(Race race, TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         raceId.setText(String.valueOf(race.getRaceId()));
         driverIdField.setText(race.getDriver() == null ? "" : String.valueOf(race.getDriver().getDriverId()));
@@ -489,7 +581,20 @@ public class MainController {
 
     }
 
-    //Method to clear driver fields after any action made, updating, adding, or deleting
+    /**
+     * clearDriverFields: Method to clear driver fields after any action made, updating, adding, or deleting
+     *
+     * @param id
+     * @param name
+     * @param car
+     * @param nationality
+     * @param team
+     * @param races
+     * @param podiums
+     * @param wins
+     * @param totalPoints
+     * @param active
+     */
     private void clearDriverFields(TextField id, TextField name, TextField car, TextField nationality, TextField team, TextField races, TextField podiums, TextField wins, TextField totalPoints, CheckBox active) {
         id.clear();
         name.clear();
@@ -503,7 +608,19 @@ public class MainController {
         if (active != null) active.setSelected(true);
     }
 
-    //Method to clear race fields after any action made, updating, adding, or deleting
+    /**
+     * clearRaceFields: Method to clear race fields after any action made, updating, adding, or deleting
+     *
+     * @param raceId
+     * @param driverIdField
+     * @param raceName
+     * @param location
+     * @param country
+     * @param date
+     * @param laps
+     * @param position
+     * @param result
+     */
     private void clearRaceFields(TextField raceId, TextField driverIdField, TextField raceName, TextField location, TextField country, TextField date, TextField laps, TextField position, TextField result) {
         raceId.clear();
         driverIdField.clear();
@@ -516,24 +633,33 @@ public class MainController {
         result.clear();
     }
 
-    //Method to refresh drivers, should return drivers all updated
+    /**
+     * refreshDrivers: Method to refresh drivers, should return drivers all updated
+     */
     private void refreshDrivers() {
         driverRows.setAll(informationManager.getDriversData());
     }
 
-    //Method to refresh races, should return races all updated
+    /**
+     * refreshRaces: Method to refresh races, should return races all updated
+     */
     private void refreshRaces() {
         raceRows.setAll(informationManager.getRacesData());
     }
 
-    //Method to refresh standings, should return changed standings
+
+    /**
+     * refreshStandings: Method to refresh standings, should return changed standings
+     */
     private void refreshStandings() {
 
         Map<String, Integer> standings = championshipCalculator.calculateStandings(informationManager.getRacesData());
         standingsRows.setAll(standings.entrySet().stream().sorted(Comparator.comparingInt((Map.Entry<String, Integer> e) -> e.getValue()).reversed()).map(e -> e.getKey() + " - " + e.getValue() + " pts").toList());
     }
 
-    //Method to update drivers, races, standings, after any action
+    /**
+     * refreshAll: Method to update drivers, races, standings, after any action
+     */
     private void refreshAll() {
         refreshDrivers();
         refreshRaces();
@@ -541,14 +667,18 @@ public class MainController {
 
     }
 
-    //Method that refreshes and updates the table after an action
+    /**
+     * Method that refreshes and updates the table after an action
+     */
     private void refreshTable() {
 
         driverRows.setAll(informationManager.getDriversData());
 
     }
 
-    //Method to load any existing data from the persistent file
+    /**
+     * Method to load any existing data from the persistent file
+     */
     private void loadExistingData() {
 
         boolean loaded = fileManager.loadFromFile(dataFileName, informationManager);
@@ -557,6 +687,9 @@ public class MainController {
         }
     }
 
+    /**
+     * Method to persist changes to the database, returns true if data is valid
+     */
     private void persistChangesIfDatabaseSource() {
         if (!fileManager.isSqlitePath(dataFileName)) {
             return;
@@ -568,7 +701,11 @@ public class MainController {
         }
     }
 
-    //Method that forms the grid for the database
+    /**
+     * Method that forms the grid for the database
+     *
+     * @return GridPane
+     */
     private GridPane formGrid() {
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -576,35 +713,65 @@ public class MainController {
         return grid;
     }
 
-    //Method to build Driver Number column items, should return a number
+    /**
+     * Method to build Driver Number column items, should return a number
+     *
+     * @param name
+     * @param getter
+     * @return TableColumn
+     */
     private TableColumn<Driver, Number> driverNumberCol(String name, java.util.function.ToIntFunction<Driver> getter) {
         TableColumn<Driver, Number> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleIntegerProperty(getter.applyAsInt(data.getValue())));
         return col;
     }
 
-    //Method to build Driver String column items. should return a string
+    /**
+     * Method to build Driver String column items. should return a string
+     *
+     * @param name
+     * @param getter
+     * @return Table Column
+     */
     private TableColumn<Driver, String> driverStringCol(String name, java.util.function.Function<Driver, String> getter) {
         TableColumn<Driver, String> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleStringProperty(getter.apply(data.getValue())));
         return col;
     }
 
-    //Method to build Race Number column items, should return a number
+    /**
+     * Method to build Race Number column items, should return a number
+     *
+     * @param name
+     * @param getter
+     * @return TableColumn
+     */
     private TableColumn<Race, Number> raceNumberCol(String name, java.util.function.ToIntFunction<Race> getter) {
         TableColumn<Race, Number> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleIntegerProperty(getter.applyAsInt(data.getValue())));
         return col;
     }
 
-    //Method to build Race String column items, should return a Strin
+    /**
+     * Method to build Race String column items, should return a Strin
+     *
+     * @param name
+     * @param getter
+     * @return TableColumn
+     */
     private TableColumn<Race, String> raceStringCol(String name, java.util.function.Function<Race, String> getter) {
         TableColumn<Race, String> col = new TableColumn<>(name);
         col.setCellValueFactory(data -> new SimpleStringProperty(getter.apply(data.getValue())));
         return col;
     }
 
-    //Method to show alert box during any wrong input event, should return the message alert
+    /**
+     * Method to show alert box during any wrong input event, should return the message alert
+     *
+     * @param alertType
+     * @param title
+     * @param message
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

@@ -1,10 +1,7 @@
 package Core;
 
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.util.*;
 import java.io.File;
-import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,12 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/*Author: Paulina Flores Colasante
- Course: Software Development 1
- Date: 3/8/2026
-
- Class FileManager: This class will load/save Driver and Race information from legacy text files or the SQLite database file provided by the user.
-
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 3/8/2026
+ * Class FileManager: This class will load/save Driver and Race information from legacy text files or the SQLite database file provided by the user.
  */
 public class FileManager {
 
@@ -28,12 +24,22 @@ public class FileManager {
         return lastError;
     }
 
-    //Provides error clarification, especially relating database connection
+    /**
+     * setLastError: Provides error clarification, especially relating database connection
+     *
+     * @param message
+     */
     private void setLastError(String message) {
         lastError = message == null ? "Unknown error" : message;
     }
 
-    // Method to load data from a file, returns true if successful, otherwise false
+    /**
+     * loadFromFile: Method to load data from a file, returns true if successful, otherwise false
+     *
+     * @param fileName
+     * @param informationManager
+     * @return boolean
+     */
     public boolean loadFromFile(String fileName, InformationManager informationManager) {
 
         if (isSqlitePath(fileName)) {
@@ -97,7 +103,13 @@ public class FileManager {
         }
     }
 
-    // Method to save data to a file, returns true if successful, otherwise false
+    /**
+     * saveToFile: Method to save data to a file, returns true if successful, otherwise false
+     *
+     * @param fileName
+     * @param informationManager
+     * @return boolean
+     */
     public boolean saveToFile(String fileName, InformationManager informationManager) {
 
         if (isSqlitePath(fileName)) {
@@ -147,7 +159,13 @@ public class FileManager {
         }
     }
 
-    //Method to load from the database, should be able to load information from any SQLite database, even after processing the script
+    /**
+     * loadFromDatabase: Method to load from the database, should be able to load information from any SQLite database, even after processing the script
+     *
+     * @param databasePath
+     * @param informationManager
+     * @return boolean
+     */
     public boolean loadFromDatabase(String databasePath, InformationManager informationManager) {
         String url = "jdbc:sqlite:" + databasePath;
 
@@ -204,7 +222,13 @@ public class FileManager {
         }
     }
 
-    //Method to save to database after any changes, or by user choice
+    /**
+     * saveToDatabase: Method to save to database after any changes, or by user choice. Returns message that it was saved to database, otherwise false.
+     *
+     * @param databasePath
+     * @param informationManager
+     * @return boolean
+     */
     public boolean saveToDatabase(String databasePath, InformationManager informationManager) {
         String url = "jdbc:sqlite:" + databasePath;
         try (Connection connection = DriverManager.getConnection(url)) {
@@ -261,13 +285,26 @@ public class FileManager {
         }
     }
 
-    //Method to identify a Script in the path given by the user, if script, will launch the import method
+
+    /**
+     * isSqlScript: Method to identify a Script in the path given by the user, if script, returns string with file type
+     *
+     * @param path
+     * @return boolean
+     */
     private boolean isSqlScriptPath(String path) {
         String normalized = path == null ? "" : path.toLowerCase().trim();
         return normalized.endsWith(".sql");
     }
 
-    //Method to import script from the path, create a database, and fill it with the information in the script
+
+    /**
+     * importSqlScript: Method to import script from the path, create a database, and fill it with the information in the script
+     *
+     * @param scriptPath
+     * @param informationManager
+     * @return boolean
+     */
     private boolean importSqlScript(String scriptPath, InformationManager informationManager) {
         try {
             Path sqlPath = Path.of(scriptPath);
@@ -278,7 +315,7 @@ public class FileManager {
             String sqlContent = Files.readString(sqlPath, StandardCharsets.UTF_8);
             String[] statements = sqlContent.split(";\\s*(?:\\r?\\n|$)");
 
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + databasePath.toString());
+            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
                  Statement statement = connection.createStatement()) {
                 for (String rawStatement : statements) {
                     String sql = rawStatement.trim();
@@ -302,14 +339,23 @@ public class FileManager {
         }
     }
 
-
-    //Method to identify Sqlite Path, Database path, if correct, should launch the next step
+    /**
+     * isSqlitePath: Method to identify Sqlite Path, Database path, if correct, should return as string with file type
+     *
+     * @param path
+     * @return boolean
+     */
     public boolean isSqlitePath(String path) {
         String normalized = path == null ? "" : path.toLowerCase().trim();
         return normalized.endsWith(".db") || normalized.endsWith(".sqlite") || normalized.endsWith(".sqlite3");
     }
 
-    //Method to ensure schema designed can be followed for better readability
+    /**
+     * ensureSchema: Method to ensure schema designed can be followed for better readability, executes and returns script
+     *
+     * @param connection
+     * @throws SQLException
+     */
     private void ensureSchema(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS drivers (" +
@@ -340,7 +386,13 @@ public class FileManager {
         }
     }
 
-    //Method to parse the Driver information gathered from the file
+
+    /**
+     * parseDriver: Method to parse the Driver information gathered from the file, returns Driver
+     *
+     * @param parts
+     * @return Driver
+     */
     private Driver parseDriver(String[] parts) {
         if (parts.length != 11) {
             System.out.println("Incorrect driver format.");
@@ -364,7 +416,13 @@ public class FileManager {
 
     }
 
-    //Method to parse the Race information gathered from the file
+    /**
+     * parseRace: Method to parse the Race information gathered from the file, returns Race
+     *
+     * @param parts
+     * @param manager
+     * @return Race
+     */
     private Race parseRace(String[] parts, InformationManager manager) {
         if (parts.length != 10) {
             System.out.println("Incorrect race format.");
@@ -387,8 +445,21 @@ public class FileManager {
         return new Race(raceId, driver, parts[3], parts[4], parts[5], parts[6], totalLaps, position, result);
     }
 
-    //Method to set the RaceRow variable
-    private record RaceRow(int raceId, int driverId, String raceName, String location, String country, String raceDate, int totalLaps, int position, int result) {
+    /**
+     * RaceRow: Method to set the RaceRow variable, returns RaceRow
+     *
+     * @param raceId
+     * @param driverId
+     * @param raceName
+     * @param location
+     * @param country
+     * @param raceDate
+     * @param totalLaps
+     * @param position
+     * @param result
+     */
+    private record RaceRow(int raceId, int driverId, String raceName, String location, String country, String raceDate,
+                           int totalLaps, int position, int result) {
 
 
     }

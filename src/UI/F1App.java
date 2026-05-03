@@ -5,21 +5,20 @@ import Core.DataValidation;
 import Core.FileManager;
 import Core.InformationManager;
 
-
 import java.util.Objects;
 
-/*Author: Paulina Flores Colasante
- Course: Software Development 1
- Date: 3/8/2026
-
-
- Program Objective: Build a Formula 1 Management System to maintain and keep record of drivers and race results. It will also calculate championship standings based on the driver's gained points.
- This includes adding, removing, and displaying a list of current drivers and races. It should also be able to exit the program.
- The user will be asked to input driver or race details to either add/remove.
- The program will return the driver list, and a confirmation.
-
- Class: UI.F1App (Main class): Will launch the main console-based application.
-
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 3/8/2026
+ * <p>
+ * <p>
+ * Program Objective: Build a Formula 1 Management System to maintain and keep record of drivers and race results. It will also calculate championship standings based on the driver's gained points.
+ * This includes adding, removing, and displaying a list of current drivers and races. It should also be able to exit the program.
+ * The user will be asked to input driver or race details to either add/remove.
+ * The program will return the driver list, and a confirmation.
+ * <p>
+ * Class: UI.F1App (Main class): Will launch the main console-based application.
  */
 public class F1App {
 
@@ -29,7 +28,9 @@ public class F1App {
     private final InformationManager informationManager;
     private final ChampionshipCalculator championshipCalculator;
 
-    // Default constructor initializes all components with their default implementations
+    /**
+     * F1App: Default constructor initializes all components with their default implementations
+     */
     public F1App() {
         validator = new DataValidation();
         fileManager = new FileManager();
@@ -37,7 +38,14 @@ public class F1App {
         championshipCalculator = new ChampionshipCalculator();
     }
 
-    // Constructor for dependency injection, allows easier testing and flexibility
+    /**
+     * F1App: Constructor for dependency injection, allows easier testing and flexibility
+     *
+     * @param validator
+     * @param fileManager
+     * @param manager
+     * @param calculator
+     */
     public F1App(DataValidation validator,
                  FileManager fileManager,
                  InformationManager manager,
@@ -48,7 +56,26 @@ public class F1App {
         this.championshipCalculator = Objects.requireNonNull(calculator, "Calculator is required");
     }
 
-    //Create and start the menu system, returning true if the user chooses to exit
+    /**
+     * Main: method to launch the application, returns main
+     *
+     * @param args
+     */
+    static void main(String[] args) {
+        if (args != null && args.length > 0 && "--cli".equalsIgnoreCase(args[0])) {
+            new F1App().run();
+            return;
+        }
+
+        F1AppGUI.main(args);
+    }
+
+
+    /**
+     * run: Create and start the menu system, returning true if the user chooses to exit
+     *
+     * @return boolean
+     */
     public boolean run() {
         MenuSystem menu = new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
         boolean started = menu.start();
@@ -60,18 +87,12 @@ public class F1App {
         return true;
     }
 
-    //Builds menu system, easier testing.
+    /**
+     * MenuSystem: Builds menu system, easier testing, returns menuSystem
+     *
+     * @return
+     */
     private MenuSystem buildMenuSystem() {
         return new MenuSystem(informationManager, fileManager, validator, championshipCalculator);
-    }
-
-    // Main method to launch the application
-    public static void main(String[] args) {
-        if (args != null && args.length > 0 && "--cli".equalsIgnoreCase(args[0])) {
-            new F1App().run();
-            return;
-        }
-
-        F1AppGUI.main(args);
     }
 }

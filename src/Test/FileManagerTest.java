@@ -1,26 +1,41 @@
 package Test;
-import Core.*;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
+import Core.Driver;
+import Core.FileManager;
+import Core.InformationManager;
+import Core.Race;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Author: Paulina Flores Colasante
+ * Course: Software Development 1
+ * Date: 4/8/2026
+ * Class FileManagerTest: This class will test the load/save feature of the Driver and Race information from legacy text files or the SQLite database file provided by the user.
+ */
 
 class FileManagerTest {
     private FileManager fileManager;
 
-
-    //Sets up the File Manager for the tests
+    /**
+     * Sets up the File Manager for the tests
+     */
     @BeforeEach
     void setUp() {
         fileManager = new FileManager();
     }
 
-    //Will test the LoadFromFile method, should pass if program is able to open and load a file.
+    /**
+     * testLoadFromFile: Will test the LoadFromFile method, should pass if program is able to open and load a file.
+     *
+     * @throws Exception
+     */
     @Test
     void testLoadFromFile() throws Exception {
 
@@ -46,7 +61,11 @@ class FileManagerTest {
         }
     }
 
-    //Test to save a file to a text file, should pass if information is saved to file.
+    /**
+     * testSaveToFile: Test to save a file to a text file, should pass if information is saved to file.
+     *
+     * @throws Exception
+     */
     @Test
     void testSaveToFile() throws Exception {
 
