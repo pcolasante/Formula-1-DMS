@@ -70,7 +70,7 @@ public class MainController {
     private final FileManager fileManager = new FileManager();
     private final ChampionshipCalculator championshipCalculator = new ChampionshipCalculator();
     private final DataValidation validator = new DataValidation();
-    private final String defaultDataFileName = "f1-data.txt";
+    private final String defaultDataFileName = "f1-data.db";
     private final ObservableList<Driver> driverRows = FXCollections.observableArrayList();
     private final ObservableList<Race> raceRows = FXCollections.observableArrayList();
     private final ObservableList<String> standingsRows = FXCollections.observableArrayList();
@@ -136,6 +136,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
@@ -148,6 +149,7 @@ public class MainController {
                 showAlert(Alert.AlertType.WARNING, "NOT FOUND", "Driver does not exist!");
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
@@ -160,6 +162,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
@@ -191,6 +194,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearDriverFields(id, name, carNumber, nationality, team, races, podiums, wins, totalPoints, active);
         });
 
@@ -251,6 +255,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results);
 
         });
@@ -265,6 +270,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results);
         });
 
@@ -277,6 +283,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results);
         });
 
@@ -304,6 +311,7 @@ public class MainController {
                 return;
             }
             refreshAll();
+            persistChangesIfDatabaseSource();
             clearRaceFields(raceId, driverId, raceName, location, country, date, totalLaps, position, results);
         });
 
@@ -334,14 +342,19 @@ public class MainController {
         Label fileLabel = new Label("Current File: " + dataFileName);
 
         TextField fileName = new TextField(dataFileName);
-        fileName.setPromptText("Enter file name or Browse");
+        fileName.setPromptText("Enter SQLite path (.db/.sqlite) or text file path");
 
         //Button to browse file
         Button browse = new Button("Browse");
         browse.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select F1 Data file");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text files", "*.txt", "."));
+
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("SQLite files", "*.db", "*.sqlite", ".sqlite3"),
+                    new FileChooser.ExtensionFilter("SQL scripts", "*.sql"),
+                    new FileChooser.ExtensionFilter("Text files", "*.txt", "."),
+                    new FileChooser.ExtensionFilter("All files", "*.*"));
             File file = fileChooser.showOpenDialog(null);
             if (file != null) {
                 fileName.setText(file.getAbsolutePath());
@@ -350,7 +363,7 @@ public class MainController {
             }
         });
 
-        //Button to add file name
+        //Button to type file name
         Button useTyped = new Button("Type file name");
         useTyped.setOnAction(e -> {
             String typed = fileName.getText() == null ? "" : fileName.getText().trim();
@@ -379,8 +392,8 @@ public class MainController {
             fileLabel.setText("Current File: " + dataFileName);
 
             boolean saved = fileManager.saveToFile(dataFileName, informationManager);
-            if (saved) showAlert(Alert.AlertType.INFORMATION, "Saved", "Data saved successfully!");
-            else showAlert(Alert.AlertType.ERROR, "Error", "Could not save data");
+            if (saved) showAlert(Alert.AlertType.INFORMATION, "Saved", "Data saved successfully to " + dataFileName);
+            else showAlert(Alert.AlertType.ERROR, "Error", "Could not save data to " + dataFileName);
         });
 
         return new VBox(10, fileLabel, fileName, new HBox(8, browse, useTyped), new HBox(8, load, save));
@@ -538,7 +551,21 @@ public class MainController {
     //Method to load any existing data from the persistent file
     private void loadExistingData() {
 
-        fileManager.loadFromFile(dataFileName, informationManager);
+        boolean loaded = fileManager.loadFromFile(dataFileName, informationManager);
+        if (!loaded) {
+            showAlert(Alert.AlertType.ERROR, "Loading Warning", "Could not load file: " + dataFileName + "\n" + fileManager.getLastError());
+        }
+    }
+
+    private void persistChangesIfDatabaseSource() {
+        if (!fileManager.isSqlitePath(dataFileName)) {
+            return;
+        }
+        boolean saved = fileManager.saveToFile(dataFileName, informationManager);
+        if (!saved) {
+            showAlert(Alert.AlertType.ERROR, "Save Error", "Could not save changes to " + dataFileName);
+
+        }
     }
 
     //Method that forms the grid for the database

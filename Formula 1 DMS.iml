@@ -10,7 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="JUnit5">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.14.0/junit-jupiter-5.14.0.jar!/" />
@@ -27,5 +27,15 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="JavaFX Lib" level="project" />
+    <orderEntry type="library" exported="" name="SQLite" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/sqlite/sqlite-jdbc-3.53.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
